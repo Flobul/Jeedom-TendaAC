@@ -1,0 +1,44 @@
+{
+    "plugins\/bornetenda\/desktop\/php\/bornetenda.php": {
+        "Ajouter une borne tenda": "Add a Tenda access point",
+        "Mes bornes tenda": "My Tenda access points",
+        "Vous n'avez pas encore de borne tenda, cliquez sur Ajouter un équipement pour commencer": "You have not configured any Tenda access points. Click Add a device to start",
+        "Général": "Main",
+        "Nom de la borne borne tenda": "Name of the Tenda access point",
+        "Objet parent": "Parent object",
+        "Aucun": "None",
+        "Catégorie": "Category",
+        "Activer": "Activate",
+        "Accéder à la carte": "Access the map",
+        "Visible": "Visible",
+        "IP de la borne tenda": "Tenda access point IP",
+        "Compte de la borne tenda": "Tenda access point username",
+        "Password de la borne tenda": "Tenda access point password",
+        "Indicateurs": "Indicators",
+        "Nom": "Name",
+        "Sous-Type": "Sub-Type",
+        "Valeur": "Value",
+        "Unité": "Unit",
+        "Paramètres": "Settings",
+        "Supprimer": "Delete",
+        "Sauvegarder": "Save",
+        "Ajouter une borne": "Add an access point",
+        "Rechercher": "Search",
+        "Gestion": "Management",
+        "Configuration": "Configuration"
+    },
+    "plugins\/bornetenda\/desktop\/js\/bornetenda.js": {
+        "Nom": "Name",
+        "Calcul": "Calculation",
+        "Min": "Min",
+        "Max": "Max",
+        "Historiser": "Historize",
+        "Afficher": "Display",
+        "Tester": "Test",
+        "Accèder à l'interface de la borne": "Open access point interface"
+    },
+    "plugins\/bornetenda\/core\/class\/bornetenda.class.php": {
+        "La borne tenda ne repond pas ou le compte est incorrect.": "The Tenda access point is not responding or the credentials are incorrect.",
+        "La borne tenda ne repond pas.": "The tenda access point does not respond."
+    }
+}
