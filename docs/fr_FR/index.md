@@ -45,8 +45,8 @@ Il est nécessaire au préalable d’activer temporairement le debug de Jeedom (
 J'aimerai remonter des erreurs/modifications directement dans le code ?
 -----------------------------------------------------------------------
 C’est tout à fait possible via
-[github](https://github.com/Flobul/plugin-TendaAC/)
+[github](https://github.com/Flobul/Jeedom-TendaAC/)
 
 Ou trouver le changelog
 -----------------------
-[Ici](https://github.com/Flobul/plugin-TendaAC/)
+[Ici](https://github.com/Flobul/Jeedom-TendaAC/)
