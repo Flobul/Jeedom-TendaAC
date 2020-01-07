@@ -11,6 +11,7 @@ function addCmdToTable(_cmd) {
         if (init(_cmd.logicalId) == 'brut') {
             tr += '<input type="hiden" name="brutid" value="' + init(_cmd.id) + '">';
         }
+
         tr += '<td>';
         tr += '<span class="cmdAttr" data-l1key="id"></span>';
         tr += '</td>';
@@ -20,6 +21,20 @@ function addCmdToTable(_cmd) {
         tr += '<input class="cmdAttr form-control type input-sm" data-l1key="type" value="action" disabled style="margin-bottom : 5px;" />';
         tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
         tr += '</td>';
+        
+        tr += '<td>';
+        tr += '<input class="cmdAttr form-control input-sm" id="'+ _cmd.id +'value" style="width : 200px;" readonly="true" value="">';
+        $('#'+_cmd.id +'value').val("loading");
+        jeedom.cmd.execute({
+            id: _cmd.id,
+            cache: 0,
+            notify: false,
+            success: function(result) {
+                $('#'+_cmd.id +'value').val(result);
+            }
+          });
+        tr += '</td>';
+
         tr += '<td>';
         if (init(_cmd.logicalId) == 'nbimpulsionminute') {
             tr += '<textarea class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="calcul" style="height : 33px;" placeholder="{{Calcul}}"></textarea> (utiliser #brut# dans la formule)';
