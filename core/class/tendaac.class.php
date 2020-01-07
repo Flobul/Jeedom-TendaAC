@@ -341,10 +341,10 @@ class tendaac extends eqLogic {
             $softversion->event($arr["systemInfo"]["softVersion"]);
 
             $wifien = $this->getCmd(null, 'wifien');
-            if ( $wifien->execCmd() != $wifien->formatValue($regs[1]) ) {
+          //  if ( $wifien->execCmd() != $wifien->formatValue($regs[1]) ) {
                 $wifien->setCollectDate('');
                 $wifien->event($arr["wifiBasicCfg"]["wifiEn"]);
-            }
+          //  }
 
             $wifien5g = $this->getCmd(null, 'wifien5g');
             $wifien5g->setCollectDate('');
