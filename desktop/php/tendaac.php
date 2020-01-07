@@ -37,6 +37,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 </center>
                 <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Configuration}}</center></span>
             </div>
+            <div class="cursor" id="bt_healthtendaac" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
+              <center>
+                <i class="fas fa-medkit" style="font-size : 5em;color:#767676;"></i>
+              </center>
+              <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Santé}}</center></span>
+            </div>
         </div>
         <legend>{{Mes routeurs Tenda}}
         </legend>
@@ -165,4 +171,3 @@ $eqLogics = eqLogic::byType($plugin->getId());
 <?php
 include_file('desktop', 'tendaac', 'js', 'tendaac');
 include_file('core', 'plugin.template', 'js');
-

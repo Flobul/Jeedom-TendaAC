@@ -97,6 +97,11 @@ function addCmdToTable(_cmd) {
     }
 }
 
+$('#bt_healthtendaac').on('click', function () {
+  $('#md_modal').dialog({title: "{{Santé Tenda AC}}"});
+  $('#md_modal').load('index.php?v=d&plugin=tendaac&modal=health').dialog('open');
+});
+
 $('#bt_goCarte').on('click', function() {
     $('#md_modal').dialog({title: "{{Accéder à l'interface du routeur}}"});
     window.open('http://'+$('.eqLogicAttr[data-l2key=username]').value()+':'+$('.eqLogicAttr[data-l2key=password]').value()+'@'+$('.eqLogicAttr[data-l2key=ip]').value()+'/');
