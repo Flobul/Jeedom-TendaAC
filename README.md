@@ -22,10 +22,8 @@ Infos :
 * Status du Wifi
 
 Actions :
-* Activer le Wifi
-* Désactiver le Wifi
+* Reboot
+* Backup
 
 Scénarii possibles :
-* Activation/désactivation du Wifi sur plage horaire
-
-<img src="https://github.com/Jeedom-Plugins-Extra/Jeedom-Plugins-Extra/blob/master/images/Jeedom-Plugins-Extra.png" align="right" height="100" width="95">
+* Sauvegarder la configuration à intervales réguliers

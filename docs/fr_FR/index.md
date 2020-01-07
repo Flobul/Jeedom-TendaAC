@@ -3,7 +3,7 @@ Présentation
 
 Ce plugin permet de gérer les routeurs Tenda AC.
 
-Il permet d’activer le WiFi et de le désactiver.
+Il permet de redémarrer le routeur et de sauvegarder sa configuration.
 
 Installation/Paramétrage
 ========================
@@ -49,4 +49,4 @@ C’est tout à fait possible via
 
 Ou trouver le changelog
 -----------------------
-[Ici](https://github.com/Flobul/Jeedom-TendaAC/)
+[Ici](https://github.com/Flobul/Jeedom-TendaAC/blob/master/docs/fr_FR/changelog.md)
