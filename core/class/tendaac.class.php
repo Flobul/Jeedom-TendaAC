@@ -34,10 +34,6 @@ class tendaac extends eqLogic {
 
     public function getUrl() {
         $url = 'http://';
-        if ( $this->getConfiguration('username') != '' )
-        {
-            $url .= $this->getConfiguration('username').':'.$this->getConfiguration('password').'@';
-        }
         $url .= $this->getConfiguration('ip');
         return $url."/";
     }
@@ -158,6 +154,37 @@ class tendaac extends eqLogic {
             if ( $info === false )
                 throw new Exception(__('Le routeur tenda ne repond pas ou le compte est incorrecte.',__FILE__));
         }
+    }
+
+    public function cookieurl($parseurl)
+    {
+      $authurl = $this->getUrl(). 'login/Auth';
+      $parseurl = $this->getUrl(). $parseurl;
+
+      $password = $this->getConfiguration('password');
+      $password = base64_encode($password);
+      $postinfo = "password=".$password;
+      $cookie_file_path = "cookie.txt";
+
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_HEADER, false);
+      curl_setopt($ch, CURLOPT_NOBODY, false);
+      curl_setopt($ch, CURLOPT_URL, $authurl);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
+      curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
+      curl_exec($ch);
+
+      //page with the content I want to grab
+      curl_setopt($ch, CURLOPT_URL, $parseurl);
+      //do stuff with the info with DomDocument() etc
+      $html = curl_exec($ch);
+      curl_close($ch);
     }
 
     public function preInsert()
