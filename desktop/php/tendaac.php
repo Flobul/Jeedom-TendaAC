@@ -134,12 +134,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">{{Compte du routeur Tenda}}</label>
-                            <div class="col-lg-3">
-                                <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="username"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-lg-2 control-label">{{Password du routeur Tenda}}</label>
                             <div class="col-lg-3">
                                 <input type="password" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="password"/>

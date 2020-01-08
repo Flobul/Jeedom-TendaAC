@@ -28,6 +28,7 @@ $eqLogics = tendaac::byType('tendaac');
 			<th>{{ID}}</th>
 			<th>{{IP}}</th>
 			<th>{{Statut}}</th>
+			<th>{{WiFi}}</th>
 			<th>{{Dernière communication}}</th>
 			<th>{{Date création}}</th>
 		</tr>
@@ -42,6 +43,16 @@ foreach ($eqLogics as $eqLogic) {
 	if ($eqLogic->getStatus('state') == 'nok') {
 		$status = '<span class="label label-danger" style="font-size : 1em; cursor : default;">{{NOK}}</span>';
 	}
+	$wifistatus = $eqLogic->getCmd('info', 'wifistatus');
+	if (is_object($wifistatus)) {
+		$wifivalue = $wifistatus->execCmd();
+	}
+	if ($wifivalue == 1){
+		$wifi = '<span class="label label-success" style="font-size : 1em;" title="{{Présent}}"><i class="fa fa-check"></i></span>';
+	} else {
+		$wifi = '<span class="label label-danger" style="font-size : 1em;" title="{{Absent}}"><i class="fa fa-times"></i></span>';
+	}
+	echo '<td>' . $wifi . '</td>';
 	echo '<td>' . $status . '</td>';
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getStatus('lastCommunication') . '</span></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getConfiguration('createtime') . '</span></td></tr>';
