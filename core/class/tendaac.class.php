@@ -385,7 +385,7 @@ class tendaacCmd extends cmd
     /*     * *********************Methode d'instance************************* */
     public function formatValue($_value, $_quote = false) {
         if ($this->getLogicalId() == 'wifistatus') {
-            if ( $_value == 1 ) {
+            if ( $_value == O ) {
                 return 0;
             } else {
                 return 1;
