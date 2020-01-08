@@ -185,6 +185,8 @@ class tendaac extends eqLogic {
       //do stuff with the info with DomDocument() etc
       $html = curl_exec($ch);
       curl_close($ch);
+      log::add('tendaac','debug','CURL '.$html);
+
     }
 
     public function preInsert()
