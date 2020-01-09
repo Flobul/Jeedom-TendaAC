@@ -204,6 +204,7 @@ class tendaac extends eqLogic {
             $reboot->setLogicalId('reboot');
             $reboot->setEventOnly(1);
             $reboot->setIsVisible(0);
+            $reboot->setOrder(1);
             $reboot->setDisplay('generic_type','GENERIC_ACTION');
             $reboot->save();
         }
@@ -217,6 +218,7 @@ class tendaac extends eqLogic {
             $backup->setLogicalId('backup');
             $backup->setEventOnly(1);
             $backup->setIsVisible(0);
+            $backup->setOrder(2);
             $backup->setDisplay('generic_type','GENERIC_ACTION');
             $backup->save();
         }
