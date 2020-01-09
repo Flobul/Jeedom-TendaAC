@@ -28,10 +28,7 @@ public static function cron() {
 	foreach(eqLogic::byType('tendaac') as $tendaac){		
 		if($tendaac->getIsEnable()){
 			if ($tendaac->getConfiguration('RepeatCmd') == "cron") {
-				$cmd = $eqLogic->scan();
-				if (!is_object($cmd)) {
-					continue;
-				}
+				$tendaac->save();
 				log::add('tendaac','debug','Cron 1 min');
 				$cmd->save();
 			}
