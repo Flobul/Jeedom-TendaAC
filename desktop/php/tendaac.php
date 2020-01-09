@@ -160,7 +160,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									{{Intervalle de rafraîchissement des informations}}
 									<sup>
 										<i class="fa fa-question-circle tooltips" title="Récupération des informations par envoi de la commande 'Refresh' à intervalle choisi.
-La commande est envoyée toutes les minutes, 5 minutes, 15 minutes, 30 minutes..." style="font-size : 1em;color:grey;"></i>
+La commande est envoyée toutes les minutes, 5 minutes, 10 minutes, 15 minutes, 30 minutes..." style="font-size : 1em;color:grey;"></i>
 									</sup>
 								</label>
 								<div class="col-sm-7 input-group">
@@ -168,7 +168,7 @@ La commande est envoyée toutes les minutes, 5 minutes, 15 minutes, 30 minutes..
 										<option value="">{{Non}}</option>
 										<option value="cron">{{Toutes les minutes}}</option>
 										<option value="cron5">{{Toutes les 5 minutes}}</option>
-										<option value="cron10">{{Toutes les 5 minutes}}</option>
+										<option value="cron10">{{Toutes les 10 minutes}}</option>
 										<option value="cron15">{{Toutes les 15 minutes}}</option>
 										<option value="cron30">{{Toutes les 30 minutes}}</option>
 										<option value="cronHourly">{{Toutes les heures}}</option>
