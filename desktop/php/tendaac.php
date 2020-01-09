@@ -146,7 +146,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         </div>
                     </fieldset>
                 </form>
-            </div>
+
 			
 			
 			
@@ -168,17 +168,18 @@ La commande est envoyée toutes les minutes, 5 minutes, 15 minutes, 30 minutes..
 										<option value="">{{Non}}</option>
 										<option value="cron">{{Toutes les minutes}}</option>
 										<option value="cron5">{{Toutes les 5 minutes}}</option>
+										<option value="cron10">{{Toutes les 5 minutes}}</option>
 										<option value="cron15">{{Toutes les 15 minutes}}</option>
 										<option value="cron30">{{Toutes les 30 minutes}}</option>
 										<option value="cronHourly">{{Toutes les heures}}</option>
-										<option value="cronDaily">{{Tous les jours}}</option>
 									</select>
 								</div>
 							</div>
 						</fieldset>
 					</form>
 			</div>	
-
+			</div>
+			
         	<div role="tabpanel" class="tab-pane" id="commandtab">
                 <table id="table_cmd" class="table table-bordered table-condensed">
                     <thead>
@@ -196,7 +197,7 @@ La commande est envoyée toutes les minutes, 5 minutes, 15 minutes, 30 minutes..
                     </tbody>
                 </table>
             </div>
-        </div>
+		</div>
     </div>
 </div>
 <?php
