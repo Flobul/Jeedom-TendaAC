@@ -149,8 +149,15 @@ class tendaac extends eqLogic {
 
         if ( $this->getIsEnable() )
         {
-            log::add('tendaac','debug','get '.preg_replace("/:[^:]*@/", ":XXXX@", $this->getUrl()). 'goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
-            $info = @file_get_contents($this->getUrl(). 'goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
+			$info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
+			if (stripos($info, 'internetStatus') !== FALSE)
+            	{
+					log::add('tendaac','debug','Routeur présent');
+				}
+			else 
+				{
+					log::add('tendaac','debug','Routeur non présent');
+				}
             if ( $info === false )
                 throw new Exception(__('Le routeur tenda ne repond pas ou le compte est incorrecte.',__FILE__));
         }
@@ -161,32 +168,45 @@ class tendaac extends eqLogic {
       $authurl = $this->getUrl(). 'login/Auth';
       $parseurl = $this->getUrl(). $parseurl;
 
-      $password = $this->getConfiguration('password');
-      $password = base64_encode($password);
-      $postinfo = "password=".$password;
-      $cookie_file_path = "cookie.txt";
+      if ( $this->getConfiguration('password') == "" )
+		{
+			$html = @file_get_contents($parseurl);
+			log::add('tendaac','debug','Reponse du routeur OK');
+        }
+      else
+        {
+	      	$password = $this->getConfiguration('password');
+			$password = base64_encode($password);
+			$postinfo = "password=".$password;
+			$cookie_file_path = "cookie.txt";
 
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_HEADER, false);
-      curl_setopt($ch, CURLOPT_NOBODY, false);
-      curl_setopt($ch, CURLOPT_URL, $authurl);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_NOBODY, false);
+			curl_setopt($ch, CURLOPT_URL, $authurl);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 
-      curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-      curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
-      curl_exec($ch);
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
+			curl_exec($ch);
 
-      //page with the content I want to grab
-      curl_setopt($ch, CURLOPT_URL, $parseurl);
-      //do stuff with the info with DomDocument() etc
-      $html = curl_exec($ch);
-      curl_close($ch);
-      log::add('tendaac','debug','CURL '.$html);
-
+			curl_setopt($ch, CURLOPT_URL, $parseurl);
+			$html = curl_exec($ch);
+			curl_close($ch);
+			if (stripos($html, 'internetStatus') !== FALSE)
+            	{
+					log::add('tendaac','debug','Cookie OK');
+				}
+			else 
+				{
+					log::add('tendaac','debug','Cookie NOK');
+				}
+			return $html;
+		}
     }
 
     public function preInsert()
@@ -350,7 +370,6 @@ class tendaac extends eqLogic {
             //log::add('tendaac','debug','get '.preg_replace("/:[^:]*@/", ":XXXX@", $url).'goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
             //$info = @file_get_contents($this->getUrl(). 'goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
             $info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
-            log::add('tendaac','debug','CURL '.$info);
 
             if ( $info === false ) {
                 throw new Exception(__('Le routeur tenda ne repond pas.',__FILE__));
