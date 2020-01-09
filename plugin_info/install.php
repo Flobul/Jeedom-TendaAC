@@ -17,7 +17,6 @@
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 function tendaac_install() {
     $cron = cron::byClassAndFunction('tendaac', 'pull');
-  log::add('tendaac','debug','début Cron : ');
     if ( ! is_object($cron)) {
         $cron = new cron();
         $cron->setClass('tendaac');
@@ -30,8 +29,6 @@ function tendaac_install() {
 }
 function tendaac_update() {
     $cron = cron::byClassAndFunction('tendaac', 'pull');
-    log::add('tendaac','debug','début Cron :1111 ');
-
     if ( ! is_object($cron)) {
         $cron = new cron();
         $cron->setClass('tendaac');
