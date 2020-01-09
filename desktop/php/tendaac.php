@@ -88,7 +88,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                            <i class='fa fa-cogs eqLogicAction pull-right cursor expertModeVisible' data-action='configure'></i>
                         </legend>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">{{Nom du routeur Tenda}}</label>
+				<label class="col-lg-2 control-label">{{Mot de passe du routeur Tenda}}	                            <label class="col-lg-2 control-label">{{Password du routeur Tenda}}</label>
+					<sup>	
+						<i class="fa fa-question-circle tooltips" title="Saisissez le mot de passe d'accès au routeur.	
+Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em;color:grey;"></i>	
+					</sup>	
+				</label>
                             <div class="col-lg-3">
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom du routeur Tenda}}"/>
