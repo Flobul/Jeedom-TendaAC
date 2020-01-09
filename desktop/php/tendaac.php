@@ -125,7 +125,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>Activer</label>
                             <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>Visible</label>
                             </div>
-                            <a class="btn btn-default" id="bt_goCarte" title='{{Accéder à la carte}}'><i class="fa fa-cogs"></i></a>
+                            <a class="btn btn-default" id="bt_goCarte" title='{{Accéder à la page web}}'><i class="fa fa-cogs"></i></a>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">{{IP du routeur Tenda}}</label>
