@@ -33,7 +33,7 @@ public static function cron() {
 					continue;
 				}
 				log::add('tendaac','debug','Cron 1 min');
-				$cmd->execCmd();
+				$cmd->save();
 			}
 		}
 	}
