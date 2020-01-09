@@ -26,6 +26,16 @@ class tendaac extends eqLogic {
         }
         log::add('tendaac','debug','cron stop');
     }
+    public static function cron() {
+  		foreach(eqLogic::byType('Optoma') as $Optoma){
+  			if($Optoma->getIsEnable()){
+  				if ($Optoma->getConfiguration('RepeatCmd') == "cron") {
+            log::add('tendaac','debug','Valeur du cron :'. $Optoma->getConfiguration('RepeatCmd'));
+  					$cmd = $Optoma->getCmd(null, 'Refresh');
+          }
+  			}
+  		}
+  	}
     public function getUrl() {
         $url = 'http://';
         $url .= $this->getConfiguration('ip');
@@ -169,7 +179,7 @@ class tendaac extends eqLogic {
             	{
 					log::add('tendaac','debug','Cookie OK');
 				}
-			else 
+			else
 				{
 					log::add('tendaac','debug','Cookie NOK');
 				}
