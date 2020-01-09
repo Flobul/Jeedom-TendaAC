@@ -364,11 +364,8 @@ class tendaac extends eqLogic {
 
     public function scan() {
         if ( $this->getIsEnable() ) {
-            log::add('tendaac','debug','scan '.$this->getName());
             $statuscmd = $this->getCmd(null, 'status');
             $url = $this->getUrl();
-            //log::add('tendaac','debug','get '.preg_replace("/:[^:]*@/", ":XXXX@", $url).'goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
-            //$info = @file_get_contents($this->getUrl(). 'goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
             $info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
 
             if ( $info === false ) {
@@ -378,8 +375,12 @@ class tendaac extends eqLogic {
                     $statuscmd->event(0);
                 }
             }
-            $arr = json_decode($info, true);
+			if ($statuscmd->execCmd() != 1) {
+                $statuscmd->setCollectDate('');
+                $statuscmd->event(1);
+            }
 
+            $arr = json_decode($info, true);
             $routername = $this->getCmd(null, 'routername');
             if ( $routername->execCmd() != $routername->formatValue($arr["deviceStastics"]["routerName"]) ) {
                 $routername->setCollectDate('');
@@ -390,11 +391,9 @@ class tendaac extends eqLogic {
             $softversion->setCollectDate('');
             $softversion->event($arr["systemInfo"]["softVersion"]);
 
-            $wifien = $this->getCmd(null, 'wifien');
-          //  if ( $wifien->execCmd() != $wifien->formatValue($regs[1]) ) {
-                $wifien->setCollectDate('');
-                $wifien->event($arr["wifiBasicCfg"]["wifiEn"]);
-          //  }
+			$wifien = $this->getCmd(null, 'wifien');
+			$wifien->setCollectDate('');
+			$wifien->event($arr["wifiBasicCfg"]["wifiEn"]);
 
             $wifien5g = $this->getCmd(null, 'wifien5g');
             $wifien5g->setCollectDate('');
@@ -413,12 +412,6 @@ class tendaac extends eqLogic {
                 $wifistatus->setCollectDate('');
                 $wifistatus->event($regs[1]);
             }
-
-            if ($statuscmd->execCmd() != 1) {
-                $statuscmd->setCollectDate('');
-                $statuscmd->event(1);
-            }
-            log::add('tendaac','debug','scan end '.$this->getName());
         }
     }
     /*     * **********************Getteur Setteur*************************** */
@@ -443,8 +436,10 @@ class tendaacCmd extends cmd
         }
         elseif ($this->getLogicalId() == 'wifien' || $this->getLogicalId() == 'wifien5g') {
             if ( $_value == true ) {
+				log::add('tendaac','debug','WiFi ='.$_value);
                 return 1;
             } else {
+				log::add('tendaac','debug','WiFi ='.$_value);
                 return 0;
             }
         }
