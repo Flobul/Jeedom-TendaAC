@@ -125,7 +125,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>Activer</label>
                             <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>Visible</label>
                             </div>
-                            <a class="btn btn-default" id="bt_goCarte" title='{{Accéder à la page web}}'><i class="fa fa-cogs"></i></a>
+                            <a class="btn btn-default" id="bt_goWebpage" title='{{Accéder à la page web}}'><i class="fa fa-cogs"></i></a>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">{{IP du routeur Tenda}}</label>
@@ -135,10 +135,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         </div>
                         <div class="form-group">
 							<label class="col-lg-2 control-label">{{Mot de passe du routeur Tenda}}
-								<sup>	
-									<i class="fa fa-question-circle tooltips" title="Saisissez le mot de passe d'accès au routeur.	
-			Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em;color:grey;"></i>	
-								</sup>	
+								<sup>
+									<i class="fa fa-question-circle tooltips" title="Saisissez le mot de passe d'accès au routeur.
+			Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em;color:grey;"></i>
+								</sup>
 							</label>
                             <div class="col-lg-3">
                                 <input type="password" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="password"/>
@@ -147,20 +147,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     </fieldset>
                 </form>
 
-			
-			
-			
+
+
+
 			<div class="col-sm-6">
 					<form class="form-horizontal">
-						<legend>{{Configuration du plugin}}						
+						<legend>{{Configuration du plugin}}
 						</legend>
-						<fieldset>	
+						<fieldset>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" >
 									{{Intervalle de rafraîchissement des informations}}
-									<sup>	
-										<i class="fa fa-question-circle tooltips" title="Récupération des informations par envoi de la commande 'Refresh' à intervalle choisi.	
-La commande est envoyée toutes les minutes, 5 minutes, 15 minutes, 30 minutes..." style="font-size : 1em;color:grey;"></i>	
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Récupération des informations par envoi de la commande 'Refresh' à intervalle choisi.
+La commande est envoyée toutes les minutes, 5 minutes, 15 minutes, 30 minutes..." style="font-size : 1em;color:grey;"></i>
 									</sup>
 								</label>
 								<div class="col-sm-7 input-group">
@@ -177,9 +177,9 @@ La commande est envoyée toutes les minutes, 5 minutes, 15 minutes, 30 minutes..
 							</div>
 						</fieldset>
 					</form>
-			</div>	
 			</div>
-			
+			</div>
+
         	<div role="tabpanel" class="tab-pane" id="commandtab">
                 <table id="table_cmd" class="table table-bordered table-condensed">
                     <thead>

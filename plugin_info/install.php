@@ -23,7 +23,7 @@ function tendaac_install() {
         $cron->setFunction('pull');
         $cron->setEnable(1);
         $cron->setDeamon(0);
-        $cron->setSchedule('* * * * *');
+        $cron->setSchedule('*/60 * * * *');
         $cron->save();
     }
 }
@@ -35,7 +35,7 @@ function tendaac_update() {
         $cron->setFunction('pull');
         $cron->setEnable(1);
         $cron->setDeamon(0);
-        $cron->setSchedule('* * * * *');
+        $cron->setSchedule('*/60 * * * *');
         $cron->save();
     }
     foreach (eqLogic::byType('tendaac') as $eqLogic) {

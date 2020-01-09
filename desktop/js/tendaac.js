@@ -115,7 +115,7 @@ $('#bt_healthtendaac').on('click', function () {
   $('#md_modal').load('index.php?v=d&plugin=tendaac&modal=health').dialog('open');
 });
 
-$('#bt_goCarte').on('click', function() {
+$('#bt_goWebpage').on('click', function() {
     $('#md_modal').dialog({title: "{{Accéder à l'interface du routeur}}"});
     window.open('http://'+$('.eqLogicAttr[data-l2key=ip]').value()+'/');
 });

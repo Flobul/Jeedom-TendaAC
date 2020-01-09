@@ -12,7 +12,7 @@ Vous trouverez la documentation [ici](https://github.com/Flobul/Jeedom-TendaAC/t
 
 ### Prévisualisation
 
-<img src="docs/images/bornetenda_screenshot1.jpg" align="center">
+<img src="docs/images/tendaac_screenshot1.jpg" align="center">
 
 
 ### Fonctions disponibles
