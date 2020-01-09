@@ -20,20 +20,70 @@ class tendaac extends eqLogic {
     /*     * *************************Attributs****************************** */
     /*     * ***********************Methode static*************************** */
     public static function pull() {
-        log::add('tendaac','debug','cron start');
+        log::add('tendaac','debug','cron auto start');
         foreach (self::byType('tendaac') as $eqLogic) {
             $eqLogic->scan();
         }
-        log::add('tendaac','debug','cron stop');
+        log::add('tendaac','debug','cron auto stop');
     }
     public static function cron() {
-  		foreach(eqLogic::byType('Optoma') as $Optoma){
-  			if($Optoma->getIsEnable()){
-  				if ($Optoma->getConfiguration('RepeatCmd') == "cron") {
-            log::add('tendaac','debug','Valeur du cron :'. $Optoma->getConfiguration('RepeatCmd'));
-  					$cmd = $Optoma->getCmd(null, 'Refresh');
-          }
-  			}
+  		foreach(eqLogic::byType('tendaac') as $eqTendaac){
+  			if($eqTendaac->getIsEnable()){
+				if ($eqTendaac->getConfiguration('RepeatCmd') == "cron") {
+            		$eqTendaac->scan();
+        			log::add('tendaac','debug','cron manuel');
+            	}
+         	}
+  		}
+  	}
+    public static function cron5() {
+  		foreach(eqLogic::byType('tendaac') as $eqTendaac){
+  			if($eqTendaac->getIsEnable()){
+              	if ($eqTendaac->getConfiguration('RepeatCmd') == "cron5") {
+            		$eqTendaac->scan();
+        			log::add('tendaac','debug','cron5 manuel');
+            	}
+         	}
+  		}
+  	}
+    public static function cron10() {
+  		foreach(eqLogic::byType('tendaac') as $eqTendaac){
+  			if($eqTendaac->getIsEnable()){
+              	if ($eqTendaac->getConfiguration('RepeatCmd') == "cron10") {
+            		$eqTendaac->scan();
+        			log::add('tendaac','debug','cron10 manuel');
+            	}
+         	}
+  		}
+  	}
+    public static function cron15() {
+  		foreach(eqLogic::byType('tendaac') as $eqTendaac){
+  			if($eqTendaac->getIsEnable()){
+              	if ($eqTendaac->getConfiguration('RepeatCmd') == "cron15") {
+            		$eqTendaac->scan();
+        			log::add('tendaac','debug','cron15 manuel');
+            	}
+         	}
+  		}
+  	}
+    public static function cron30() {
+  		foreach(eqLogic::byType('tendaac') as $eqTendaac){
+  			if($eqTendaac->getIsEnable()){
+              	if ($eqTendaac->getConfiguration('RepeatCmd') == "cron30") {
+            		$eqTendaac->scan();
+        			log::add('tendaac','debug','cron30 manuel ');
+            	}
+         	}
+  		}
+  	}
+    public static function cronHourly() {
+  		foreach(eqLogic::byType('tendaac') as $eqTendaac){
+  			if($eqTendaac->getIsEnable()){
+              	if ($eqTendaac->getConfiguration('RepeatCmd') == "cronHourly") {
+            		$eqTendaac->scan();
+        			log::add('tendaac','debug','cronHourly manuel');
+            	}
+         	}
   		}
   	}
     public function getUrl() {
@@ -76,115 +126,112 @@ class tendaac extends eqLogic {
         }
         else {
             if ( $backup->getDisplay('generic_type') == "" ) {
-					$backup->setDisplay('generic_type','GENERIC_ACTION');
-					$backup->save();
+              $backup->setDisplay('generic_type','GENERIC_ACTION');
+              $backup->save();
             }
         }
         $cmd = $this->getCmd(null, 'status');
         if ( is_object($cmd) ) {
             if ( $cmd->getDisplay('generic_type') == "" ) {
-					$cmd->setDisplay('generic_type','GENERIC_INFO');
-					$cmd->save();
+              $cmd->setDisplay('generic_type','GENERIC_INFO');
+              $cmd->save();
             }
         }
         $cmd = $this->getCmd(null, 'wifistatus');
         if ( is_object($cmd) ) {
             if ( $cmd->getDisplay('generic_type') == "" ) {
-					$cmd->setDisplay('generic_type','GENERIC_INFO');
-					$cmd->save();
+              $cmd->setDisplay('generic_type','GENERIC_INFO');
+              $cmd->save();
             }
         }
         $cmd = $this->getCmd(null, 'routername');
         if ( is_object($cmd) ) {
             if ( $cmd->getDisplay('generic_type') == "" ) {
-					$cmd->setDisplay('generic_type','GENERIC_INFO');
-					$cmd->save();
+              $cmd->setDisplay('generic_type','GENERIC_INFO');
+              $cmd->save();
             }
         }
         $cmd = $this->getCmd(null, 'softversion');
         if ( is_object($cmd) ) {
             if ( $cmd->getDisplay('generic_type') == "" ) {
-					$cmd->setDisplay('generic_type','GENERIC_INFO');
-					$cmd->save();
+              $cmd->setDisplay('generic_type','GENERIC_INFO');
+              $cmd->save();
             }
         }
         $cmd = $this->getCmd(null, 'wifien');
         if ( is_object($cmd) ) {
             if ( $cmd->getDisplay('generic_type') == "" ) {
-					$cmd->setDisplay('generic_type','GENERIC_INFO');
-					$cmd->save();
+              $cmd->setDisplay('generic_type','GENERIC_INFO');
+              $cmd->save();
             }
         }
         $cmd = $this->getCmd(null, 'wifien5g');
         if ( is_object($cmd) ) {
             if ( $cmd->getDisplay('generic_type') == "" ) {
-					$cmd->setDisplay('generic_type','GENERIC_INFO');
-					$cmd->save();
+              $cmd->setDisplay('generic_type','GENERIC_INFO');
+              $cmd->save();
             }
         }
         $cmd = $this->getCmd(null, 'wifissid');
         if ( is_object($cmd) ) {
             if ( $cmd->getDisplay('generic_type') == "" ) {
-					$cmd->setDisplay('generic_type','GENERIC_INFO');
-					$cmd->save();
+              $cmd->setDisplay('generic_type','GENERIC_INFO');
+              $cmd->save();
             }
         }
         $cmd = $this->getCmd(null, 'wifissid5g');
         if ( is_object($cmd) ) {
             if ( $cmd->getDisplay('generic_type') == "" ) {
-					$cmd->setDisplay('generic_type','GENERIC_INFO');
-					$cmd->save();
+              $cmd->setDisplay('generic_type','GENERIC_INFO');
+              $cmd->save();
             }
         }
         if ( $this->getIsEnable() ) {
-			$info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
-			if (stripos($info, 'internetStatus') !== FALSE) {
-					log::add('tendaac','debug','Routeur présent');
-				}
-			else {
-					log::add('tendaac','debug','Routeur non présent');
-				}
-            if ( $info === false )
-                throw new Exception(__('Le routeur tenda ne repond pas ou le compte est incorrecte.',__FILE__));
+          $info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
+          if (stripos($info, 'internetStatus') !== FALSE) {
+            log::add('tendaac','debug','Routeur présent');
+          }
+          else {
+            log::add('tendaac','debug','Routeur non présent');
+          }
+          if ( $info === false )
+          throw new Exception(__('Le routeur Tenda ne repond pas ou le compte est incorrect.',__FILE__));
         }
     }
-    public function cookieurl($parseurl)
-    {
+    public function cookieurl($parseurl) {
       $authurl = $this->getUrl(). 'login/Auth';
       $parseurl = $this->getUrl(). $parseurl;
       if ( $this->getConfiguration('password') == "" ) {
-			$html = @file_get_contents($parseurl);
-			log::add('tendaac','debug','Reponse du routeur OK');
-		}
+        $html = @file_get_contents($parseurl);
+        log::add('tendaac','debug','Reponse du routeur OK');
+      }
       else {
-	      	$password = $this->getConfiguration('password');
-			$password = base64_encode($password);
-			$postinfo = "password=".$password;
-			$cookie_file_path = "cookie.txt";
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_HEADER, false);
-			curl_setopt($ch, CURLOPT_NOBODY, false);
-			curl_setopt($ch, CURLOPT_URL, $authurl);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
-			curl_exec($ch);
-			curl_setopt($ch, CURLOPT_URL, $parseurl);
-			$html = curl_exec($ch);
-			curl_close($ch);
-			if (stripos($html, 'internetStatus') !== FALSE)
-            	{
-					log::add('tendaac','debug','Cookie OK');
+        $password = $this->getConfiguration('password');
+  			$password = base64_encode($password);
+  			$postinfo = "password=".$password;
+  			$cookie_file_path = "cookie.txt";
+  			$ch = curl_init();
+  			curl_setopt($ch, CURLOPT_HEADER, false);
+  			curl_setopt($ch, CURLOPT_NOBODY, false);
+  			curl_setopt($ch, CURLOPT_URL, $authurl);
+  			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+  			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
+  			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+  			curl_setopt($ch, CURLOPT_POST, 1);
+  			curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
+  			curl_exec($ch);
+  			curl_setopt($ch, CURLOPT_URL, $parseurl);
+  			$html = curl_exec($ch);
+  			curl_close($ch);
+  			if (stripos($html, 'internetStatus') !== FALSE) {
+          log::add('tendaac','debug','Cookie OK');
+        }
+        else {
+          log::add('tendaac','debug','Cookie NOK');
 				}
-			else
-				{
-					log::add('tendaac','debug','Cookie NOK');
-				}
-			return $html;
-		}
+        return $html;
+      }
     }
     public function preInsert()
     {
@@ -351,37 +398,37 @@ class tendaac extends eqLogic {
                 }
             }
 			if ($statuscmd->execCmd() != 1) {
-                $statuscmd->setCollectDate('');
-                $statuscmd->event(1);
-            }
-            $arr = json_decode($info, true);
-            $routername = $this->getCmd(null, 'routername');
-            if ( $routername->execCmd() != $routername->formatValue($arr["deviceStastics"]["routerName"]) ) {
-                $routername->setCollectDate('');
-                $routername->event($arr["deviceStastics"]["routerName"]);
-            }
-            $softversion = $this->getCmd(null, 'softversion');
-            $softversion->setCollectDate('');
-            $softversion->event($arr["systemInfo"]["softVersion"]);
-			$wifien = $this->getCmd(null, 'wifien');
-			$wifien->setCollectDate('');
-			$wifien->event($arr["wifiBasicCfg"]["wifiEn"]);
-            $wifien5g = $this->getCmd(null, 'wifien5g');
-            $wifien5g->setCollectDate('');
-            $wifien5g->event($arr["wifiBasicCfg"]["wifiEn_5G"]);
-            $wifissid = $this->getCmd(null, 'wifissid');
-            $wifissid->setCollectDate('');
-            $wifissid->event($arr["wifiBasicCfg"]["wifiSSID"]);
-            $wifissid5g = $this->getCmd(null, 'wifissid5g');
-            $wifissid5g->setCollectDate('');
-            $wifissid5g->event($arr["wifiBasicCfg"]["wifiSSID_5G"]);
-            $wifistatus = $this->getCmd(null, 'wifistatus');
-            if ( $wifistatus->execCmd() != $wifistatus->formatValue($regs[1]) ) {
-                $wifistatus->setCollectDate('');
-                $wifistatus->event($regs[1]);
-            }
-        }
+        $statuscmd->setCollectDate('');
+        $statuscmd->event(1);
+      }
+      $arr = json_decode($info, true);
+      $routername = $this->getCmd(null, 'routername');
+      if ( $routername->execCmd() != $routername->formatValue($arr["deviceStastics"]["routerName"]) ) {
+        $routername->setCollectDate('');
+        $routername->event($arr["deviceStastics"]["routerName"]);
+      }
+      $softversion = $this->getCmd(null, 'softversion');
+      $softversion->setCollectDate('');
+      $softversion->event($arr["systemInfo"]["softVersion"]);
+      $wifien = $this->getCmd(null, 'wifien');
+      $wifien->setCollectDate('');
+      $wifien->event($arr["wifiBasicCfg"]["wifiEn"]);
+      $wifien5g = $this->getCmd(null, 'wifien5g');
+      $wifien5g->setCollectDate('');
+      $wifien5g->event($arr["wifiBasicCfg"]["wifiEn_5G"]);
+      $wifissid = $this->getCmd(null, 'wifissid');
+      $wifissid->setCollectDate('');
+      $wifissid->event($arr["wifiBasicCfg"]["wifiSSID"]);
+      $wifissid5g = $this->getCmd(null, 'wifissid5g');
+      $wifissid5g->setCollectDate('');
+      $wifissid5g->event($arr["wifiBasicCfg"]["wifiSSID_5G"]);
+      $wifistatus = $this->getCmd(null, 'wifistatus');
+      if ( $wifistatus->execCmd() != $wifistatus->formatValue($regs[1]) ) {
+        $wifistatus->setCollectDate('');
+        $wifistatus->event($regs[1]);
+      }
     }
+  }
     /*     * **********************Getteur Setteur*************************** */
 }
 class tendaacCmd extends cmd
@@ -425,8 +472,7 @@ class tendaacCmd extends cmd
             return false;
         log::add('tendaac','debug','get '.preg_replace("/:[^:]*@/", ":XXXX@", $url));
         $result = @file_get_contents($url);
-        if ( $result === false )
-        {
+        if ( $result === false ) {
             return false;
         }
         $eqLogic->scan();
