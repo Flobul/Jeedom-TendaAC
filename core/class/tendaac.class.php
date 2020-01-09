@@ -43,12 +43,10 @@ public static function cron5() {
 	foreach(eqLogic::byType('tendaac') as $tendaac){		
 		if($tendaac->getIsEnable()){
 			if ($tendaac->getConfiguration('RepeatCmd') == "cron5"){
-				$cmd = $eqLogic->scan();
-				if (!is_object($cmd)) {
-					continue;
+				foreach (eqLogic::byType('tendaac') as $eqLogic) {
+					$eqLogic->save();
 				}
  				log::add('tendaac','debug','Cron 5 min');
-				$cmd->execCmd();
 			}
 		}
 	}
