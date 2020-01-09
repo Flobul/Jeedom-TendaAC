@@ -134,7 +134,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">{{Password du routeur Tenda}}</label>
+                            <label class="col-lg-2 control-label">{{Mot de passe du routeur Tenda}}
+								<sup>
+									<i class="fa fa-question-circle tooltips" title="Saisissez le mot de passe d'accès au routeur.
+Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em;color:grey;"></i>
+								</sup>
+							</label>
                             <div class="col-lg-3">
                                 <input type="password" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="password"/>
                             </div>
@@ -144,67 +149,25 @@ $eqLogics = eqLogic::byType($plugin->getId());
             </div>
 		<div class="col-sm-6">
 			<form class="form-horizontal">
-				<legend>Configuration du plugin
-				<sup>
-				<i class="fa fa-question-circle tooltips" title="Choisissez une méthode pour la récupération des informations/contrôle,
-ainsi qu'un intervalle pour le rafraissement des informations.
-Par défaut, la méthode  « Requête CGI » est appliquée,
-sans rafraîchissement des données." style="font-size : 1em;color:grey;"></i>
-						</sup>
-						</legend>
 				<fieldset>
 				<div class="form-group">
-					<label class="col-sm-6 control-label">{{Méthode de récupération des informations et de contrôle du vidéoprojecteur}}
+					<label class="col-sm-6 control-label" >{{Intervalle de rafraîchissement des informations}}
 						<sup>
-								<i class="fa fa-question-circle tooltips" title="Choisissez un protocole de contrôle.
-Assurez-vous que le protocole est activé sur votre vidéoprojecteur.
-Requête CGI est le mode préférentiel." style="font-size : 1.5em;color:grey;"></i>
+							<i class="fa fa-question-circle tooltips" title="Récupération des informations par envoi de la commande 'Refresh' à intervalle choisi.
+La commande est envoyée toutes les minutes, 5 minutes, 15 minutes, 30 minutes..." style="font-size : 1em;color:grey;"></i>
 						</sup>
-                                </label>
-					<div class="col-sm-6">
-                        	<div>
-                                    <label class="radio-inline"><input type="radio" name="config" class="eqLogicAttr" data-l1key="configuration" data-l2key="askCGI" />{{Requête CGI (recommandée)}}
-								<sup>
-										<i class="fa fa-question-circle tooltips" title="Nécessite l'activation du HTTP sur le vidéoprojecteur.
-(récupération des informations et commandes)" style="font-size : 1.5em;color:grey;"></i>
-								</sup>
-                                  </label>
-                                </div>
-                            	<div>
-                                	<label class="radio-inline"><input type="radio" name="config" class="eqLogicAttr" data-l1key="configuration" data-l2key="askTelnet" />{{Telnet}}
-								<sup>
-										<i class="fa fa-question-circle tooltips" title="Nécessite l'activation du Telnet sur le vidéoprojecteur.
-(récupération des informations et commandes)" style="font-size : 1.5em;color:grey;"></i>
-								</sup>
-                                  </label>
-                                </div>
-                            	<div>
-                                    <label class="radio-inline"><input type="radio" name="config" class="eqLogicAttr" data-l1key="configuration" data-l2key="askPJLink" />{{PJLink}}
-						<sup>
-										<i class="fa fa-question-circle tooltips" title="Nécessite l'activation de PJ Link sur le vidéoprojecteur.
-(récupération des informations et commandes)" style="font-size : 1.5em;color:grey;"></i>
-						</sup>
-			</label>
-			</div>
-			</div>
-		<label class="col-sm-6 control-label" >{{Intervalle de rafraîchissement des informations}}
-			<sup>
-					<i class="fa fa-question-circle tooltips" title="Récupération des informations par envoi de la commande 'Refresh' à intervalle choisi.
-La commande est envoyée toutes les minutes, 5 minutes, 15 minutes, 30 minutes..." style="font-size : 1.5em;color:grey;"></i>
-						</sup>
-			</label>
-						<div class="col-sm-3 input-group">
-							<select class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="RepeatCmd">
-								<option value="">{{Non}}</option>
-								<option value="cron">{{Toutes les minutes}}</option>
-								<option value="cron5">{{Toutes les 5 minutes}}</option>
-								<option value="cron15">{{Toutes les 15 minutes}}</option>
-								<option value="cron30">{{Toutes les 30 minutes}}</option>
-								<option value="cronHourly">{{Toutes les heures}}</option>
-								<option value="cronDaily">{{Tous les jours}}</option>
-							</select>
-						</div>
-			</fieldset>
+					</label>
+					<div class="col-sm-3 input-group">
+					<select class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="RepeatCmd">
+						<option value="">{{Non}}</option>
+						<option value="cron">{{Toutes les minutes}}</option>
+						<option value="cron5">{{Toutes les 5 minutes}}</option>
+						<option value="cron15">{{Toutes les 15 minutes}}</option>
+						<option value="cron30">{{Toutes les 30 minutes}}</option>
+						<option value="cronHourly">{{Toutes les heures}}</option>
+					</select>
+				</div>
+				</fieldset>
 				</form>
 			</div>
         	</div>
