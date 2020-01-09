@@ -386,17 +386,17 @@ class tendaac extends eqLogic {
         }
     }
     public function scan() {
-        if ( $this->getIsEnable() ) {
-            $statuscmd = $this->getCmd(null, 'status');
-            $url = $this->getUrl();
-            $info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
-            if ( $info === false ) {
-                throw new Exception(__('Le routeur tenda ne repond pas.',__FILE__));
-                if ($statuscmd->execCmd() != 0) {
-                    $statuscmd->setCollectDate('');
-                    $statuscmd->event(0);
-                }
-            }
+      if ( $this->getIsEnable() ) {
+        $statuscmd = $this->getCmd(null, 'status');
+        $url = $this->getUrl();
+        $info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
+        if ( $info === false ) {
+          throw new Exception(__('Le routeur tenda ne repond pas.',__FILE__));
+        if ($statuscmd->execCmd() != 0) {
+          $statuscmd->setCollectDate('');
+          $statuscmd->event(0);
+        }
+      }
 			if ($statuscmd->execCmd() != 1) {
         $statuscmd->setCollectDate('');
         $statuscmd->event(1);
