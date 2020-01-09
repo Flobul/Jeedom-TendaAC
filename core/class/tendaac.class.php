@@ -1,5 +1,4 @@
 <?php
-
 /* This file is part of Jeedom.
  *
  * Jeedom is free software: you can redistribute it and/or modify
@@ -15,91 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
-
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-
 class tendaac extends eqLogic {
     /*     * *************************Attributs****************************** */
-
     /*     * ***********************Methode static*************************** */
-
-public static function cron() {
-	foreach(eqLogic::byType('tendaac') as $tendaac){		
-		if($tendaac->getIsEnable()){
-			if ($tendaac->getConfiguration('RepeatCmd') == "cron") {
-				$tendaac->save();
-				log::add('tendaac','debug','Cron 1 min');
-				$cmd->save();
-			}
-		}
-	}
-}
-  
-public static function cron5() {
-	foreach(eqLogic::byType('tendaac') as $tendaac){		
-		if($tendaac->getIsEnable()){
-			if ($tendaac->getConfiguration('RepeatCmd') == "cron5"){
-				foreach (eqLogic::byType('tendaac') as $eqLogic) {
-					$eqLogic->save();
-				}
- 				log::add('tendaac','debug','Cron 5 min');
-			}
-		}
-	}
-}
-  
-public static function cron15() {
-	foreach(eqLogic::byType('tendaac') as $tendaac){		
-		if($tendaac->getIsEnable()){
-			if ($tendaac->getConfiguration('RepeatCmd') == "cron15"){
-				$cmd = $eqLogic->scan();
-				if (!is_object($cmd)) {
-					continue;
-				}
-				log::add('tendaac','debug','Cron 15 min');
-				$cmd->execCmd();
-			}
-		}
-	}
-}
-
-public static function cron30() {
-	foreach(eqLogic::byType('tendaac') as $tendaac){		
-		if($tendaac->getIsEnable()){
-			if ($tendaac->getConfiguration('RepeatCmd') == "cron30"){
-				$cmd = $eqLogic->scan();
-				if (!is_object($cmd)) {
-					continue;
-				}
-				log::add('tendaac','debug','Cron 30 min');
-				$cmd->execCmd();
-			}
-		}
-	}
-}
-  
-public static function cronHourly() {
-	foreach(eqLogic::byType('tendaac') as $tendaac){		
-		if($tendaac->getIsEnable()){
-			if ($tendaac->getConfiguration('RepeatCmd') == "cronHourly"){
-				$cmd = $eqLogic->scan();
-				if (!is_object($cmd)) {
-					continue;
-				}
-				log::add('tendaac','debug','Cron 1 heure');
-				$cmd->execCmd();
-			}
-		}
-	}
-}
-
+    public static function pull() {
+        log::add('tendaac','debug','cron start');
+        foreach (self::byType('tendaac') as $eqLogic) {
+            $eqLogic->scan();
+        }
+        log::add('tendaac','debug','cron stop');
+    }
     public function getUrl() {
         $url = 'http://';
         $url .= $this->getConfiguration('ip');
         return $url."/";
     }
-
     public function preUpdate() {
         $reboot = $this->getCmd(null, 'reboot');
          if ( ! is_object($reboot) ) {
@@ -195,7 +126,6 @@ public static function cronHourly() {
 					$cmd->save();
             }
         }
-
         if ( $this->getIsEnable() ) {
 			$info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
 			if (stripos($info, 'internetStatus') !== FALSE) {
@@ -208,12 +138,10 @@ public static function cronHourly() {
                 throw new Exception(__('Le routeur tenda ne repond pas ou le compte est incorrecte.',__FILE__));
         }
     }
-
     public function cookieurl($parseurl)
     {
       $authurl = $this->getUrl(). 'login/Auth';
       $parseurl = $this->getUrl(). $parseurl;
-
       if ( $this->getConfiguration('password') == "" ) {
 			$html = @file_get_contents($parseurl);
 			log::add('tendaac','debug','Reponse du routeur OK');
@@ -223,21 +151,17 @@ public static function cronHourly() {
 			$password = base64_encode($password);
 			$postinfo = "password=".$password;
 			$cookie_file_path = "cookie.txt";
-
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_HEADER, false);
 			curl_setopt($ch, CURLOPT_NOBODY, false);
 			curl_setopt($ch, CURLOPT_URL, $authurl);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
 			curl_exec($ch);
-
 			curl_setopt($ch, CURLOPT_URL, $parseurl);
 			$html = curl_exec($ch);
 			curl_close($ch);
@@ -252,12 +176,10 @@ public static function cronHourly() {
 			return $html;
 		}
     }
-
     public function preInsert()
     {
         $this->setIsVisible(0);
     }
-
     public function postInsert()
     {
         $cmd = $this->getCmd(null, 'status');
@@ -397,7 +319,6 @@ public static function cronHourly() {
             $wifissid5g->save();
         }
     }
-
     public function event() {
         foreach (eqLogic::byType('tendaac') as $eqLogic) {
             if ( $eqLogic->getId() == init('id') ) {
@@ -405,13 +326,11 @@ public static function cronHourly() {
             }
         }
     }
-
     public function scan() {
         if ( $this->getIsEnable() ) {
             $statuscmd = $this->getCmd(null, 'status');
             $url = $this->getUrl();
             $info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
-
             if ( $info === false ) {
                 throw new Exception(__('Le routeur tenda ne repond pas.',__FILE__));
                 if ($statuscmd->execCmd() != 0) {
@@ -423,34 +342,27 @@ public static function cronHourly() {
                 $statuscmd->setCollectDate('');
                 $statuscmd->event(1);
             }
-
             $arr = json_decode($info, true);
             $routername = $this->getCmd(null, 'routername');
             if ( $routername->execCmd() != $routername->formatValue($arr["deviceStastics"]["routerName"]) ) {
                 $routername->setCollectDate('');
                 $routername->event($arr["deviceStastics"]["routerName"]);
             }
-
             $softversion = $this->getCmd(null, 'softversion');
             $softversion->setCollectDate('');
             $softversion->event($arr["systemInfo"]["softVersion"]);
-
 			$wifien = $this->getCmd(null, 'wifien');
 			$wifien->setCollectDate('');
 			$wifien->event($arr["wifiBasicCfg"]["wifiEn"]);
-
             $wifien5g = $this->getCmd(null, 'wifien5g');
             $wifien5g->setCollectDate('');
             $wifien5g->event($arr["wifiBasicCfg"]["wifiEn_5G"]);
-
             $wifissid = $this->getCmd(null, 'wifissid');
             $wifissid->setCollectDate('');
             $wifissid->event($arr["wifiBasicCfg"]["wifiSSID"]);
-
             $wifissid5g = $this->getCmd(null, 'wifissid5g');
             $wifissid5g->setCollectDate('');
             $wifissid5g->event($arr["wifiBasicCfg"]["wifiSSID_5G"]);
-
             $wifistatus = $this->getCmd(null, 'wifistatus');
             if ( $wifistatus->execCmd() != $wifistatus->formatValue($regs[1]) ) {
                 $wifistatus->setCollectDate('');
@@ -460,15 +372,10 @@ public static function cronHourly() {
     }
     /*     * **********************Getteur Setteur*************************** */
 }
-
 class tendaacCmd extends cmd
 {
     /*     * *************************Attributs****************************** */
-
-
     /*     * ***********************Methode static*************************** */
-
-
     /*     * *********************Methode d'instance************************* */
     public function formatValue($_value, $_quote = false) {
         if ($this->getLogicalId() == 'wifistatus') {
@@ -496,7 +403,6 @@ class tendaacCmd extends cmd
             throw new Exception(__('Equipement desactivé impossible d\éxecuter la commande : ' . $this->getHumanName(), __FILE__));
         }
         $url = $eqLogic->getUrl();
-
         if ( $this->getLogicalId() == 'backup' ) {
             $url .= "cgi-bin/DownloadCfg/RouterCfm.cfg";
         }
