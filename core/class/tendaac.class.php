@@ -24,76 +24,80 @@ class tendaac extends eqLogic {
 
     /*     * ***********************Methode static*************************** */
 
+public static function cron() {
+	foreach(eqLogic::byType('tendaac') as $tendaac){		
+		if($tendaac->getIsEnable()){
+			if ($tendaac->getConfiguration('RepeatCmd') == "cron") {
+				$cmd = $eqLogic->scan();
+				if (!is_object($cmd)) {
+					continue;
+				}
+				log::add('tendaac','debug','Cron 1 min');
+				$cmd->execCmd();
+			}
+		}
+	}
+}
+  
+public static function cron5() {
+	foreach(eqLogic::byType('tendaac') as $tendaac){		
+		if($tendaac->getIsEnable()){
+			if ($tendaac->getConfiguration('RepeatCmd') == "cron5"){
+				$cmd = $eqLogic->scan();
+				if (!is_object($cmd)) {
+					continue;
+				}
+ 				log::add('tendaac','debug','Cron 5 min');
+				$cmd->execCmd();
+			}
+		}
+	}
+}
+  
+public static function cron15() {
+	foreach(eqLogic::byType('tendaac') as $tendaac){		
+		if($tendaac->getIsEnable()){
+			if ($tendaac->getConfiguration('RepeatCmd') == "cron15"){
+				$cmd = $eqLogic->scan();
+				if (!is_object($cmd)) {
+					continue;
+				}
+				log::add('tendaac','debug','Cron 15 min');
+				$cmd->execCmd();
+			}
+		}
+	}
+}
 
-	public static function cron() {
-		foreach(eqLogic::byType('tendaac') as $tendaac){		
-			if($tendaac->getIsEnable()){
-				if ($tendaac->getConfiguration('RepeatCmd') == "cron") {
-					$cmd = $eqLogic->scan();
-					if (!is_object($cmd)) {
-						continue;
-					}
-					$cmd->execCmd();
-                }
+public static function cron30() {
+	foreach(eqLogic::byType('tendaac') as $tendaac){		
+		if($tendaac->getIsEnable()){
+			if ($tendaac->getConfiguration('RepeatCmd') == "cron30"){
+				$cmd = $eqLogic->scan();
+				if (!is_object($cmd)) {
+					continue;
+				}
+				log::add('tendaac','debug','Cron 30 min');
+				$cmd->execCmd();
 			}
 		}
 	}
+}
   
-  	public static function cron5() {
-		foreach(eqLogic::byType('tendaac') as $tendaac){		
-			if($tendaac->getIsEnable()){
-				if ($tendaac->getConfiguration('RepeatCmd') == "cron5"){
-                   $cmd = $eqLogic->scan();
-                   if (!is_object($cmd)) {
-                     continue;
-                   }
-                   $cmd->execCmd();
+public static function cronHourly() {
+	foreach(eqLogic::byType('tendaac') as $tendaac){		
+		if($tendaac->getIsEnable()){
+			if ($tendaac->getConfiguration('RepeatCmd') == "cronHourly"){
+				$cmd = $eqLogic->scan();
+				if (!is_object($cmd)) {
+					continue;
 				}
+				log::add('tendaac','debug','Cron 1 heure');
+				$cmd->execCmd();
 			}
 		}
 	}
-  
-  	public static function cron15() {
-		foreach(eqLogic::byType('tendaac') as $tendaac){		
-			if($tendaac->getIsEnable()){
-				if ($tendaac->getConfiguration('RepeatCmd') == "cron15"){
-                   $cmd = $eqLogic->scan();
-                   if (!is_object($cmd)) {
-                     continue;
-                   }
-                   $cmd->execCmd();
-				}
-			}
-		}
-	}
-
-  	public static function cron30() {
-		foreach(eqLogic::byType('tendaac') as $tendaac){		
-			if($tendaac->getIsEnable()){
-				if ($tendaac->getConfiguration('RepeatCmd') == "cron30"){
-                   $cmd = $eqLogic->scan();
-                   if (!is_object($cmd)) {
-                     continue;
-                   }
-                   $cmd->execCmd();
-				}
-			}
-		}
-	}
-  
-	public static function cronHourly() {
-		foreach(eqLogic::byType('tendaac') as $tendaac){		
-			if($tendaac->getIsEnable()){
-				if ($tendaac->getConfiguration('RepeatCmd') == "cronHourly"){
-                   $cmd = $eqLogic->scan();
-                   if (!is_object($cmd)) {
-                     continue;
-                   }
-                   $cmd->execCmd();
-				}
-			}
-		}
-	}
+}
 
     public function getUrl() {
         $url = 'http://';
