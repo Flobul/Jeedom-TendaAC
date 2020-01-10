@@ -183,7 +183,16 @@ Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em
             <div class="form-group">
               <label class="col-xs-12"><i class="fas fa-tape"></i> Sauvegardes disponibles</label>
               <div class="col-xs-12">
-                <select class="form-control" id="sel_restoreBackup"><option value="/var/www/html/core/class/../../backup/backup-MaisonFlorine-4.0.38-2020-01-10-03h43.tar.gz">backup-MaisonFlorine-4.0.38-2020-01-10-03h43.tar.gz</option><option value="/var/www/html/core/class/../../backup/backup-MaisonFlorine-4.0.38-2020-01-09-03h43.tar.gz">backup-MaisonFlorine-4.0.38-2020-01-09-03h43.tar.gz</option><option value="/var/www/html/core/class/../../backup/backup-MaisonFlorine-4.0.37-2020-01-08-13h55.tar.gz">backup-MaisonFlorine-4.0.37-2020-01-08-13h55.tar.gz</option></select>
+                <select class="form-control" id="sel_restoreBackupTenda">
+					<option value="">Aucune</option>
+					<?php
+						$directory = 'plugins/tendaac/data/backup/';
+						$scanned_directory = preg_grep('~\.(cfg)$~',(scandir($directory)));
+                          foreach ($scanned_directory as $key => $info) {
+                              echo '<option value="' . $directory . $info . '">' . $info . '</option>';
+                          }
+                      ?>
+                      </select>
               </div>
             </div>
 

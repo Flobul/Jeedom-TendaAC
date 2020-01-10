@@ -119,3 +119,20 @@ $('#bt_goWebpage').on('click', function() {
     $('#md_modal').dialog({title: "{{Accéder à l'interface du routeur}}"});
     window.open('http://'+$('.eqLogicAttr[data-l2key=ip]').value()+'/');
 });
+
+$('#bt_downloadBackupTenda').on('click', function() {
+    $('#md_modal').dialog({title: "{{Télécharger la sauvegarde}}"});
+      if($('#sel_restoreBackupTenda').value() != ''){
+        window.open('core/php/downloadFile.php?pathfile='+$('#sel_restoreBackupTenda').value());
+      }
+});
+
+$('#bt_removeBackupTenda').on('click', function() {
+    $('#md_modal').dialog({title: "{{Supprimer la sauvegarde}}"});
+    bootbox.confirm('{{Etes-vous sûr de vouloir supprimer la sauvegarde sélectionnée : }}', function (result) {
+
+        if (result) {
+        }
+    });
+
+});
