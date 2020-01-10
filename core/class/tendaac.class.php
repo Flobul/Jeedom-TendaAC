@@ -201,6 +201,7 @@ class tendaac extends eqLogic {
     public function cookieurl($parseurl) {
       $authurl = $this->getUrl(). 'login/Auth';
       $parseurl = $this->getUrl(). $parseurl;
+      log::add('tendaac','debug','ParseURL = '.$parseurl);
       if ( $this->getConfiguration('password') == "" ) {
         $html = @file_get_contents($parseurl);
         log::add('tendaac','debug','Reponse du routeur OK');
@@ -221,15 +222,30 @@ class tendaac extends eqLogic {
   			curl_setopt($ch, CURLOPT_POST, 1);
   			curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
   			curl_exec($ch);
-  			curl_setopt($ch, CURLOPT_URL, $parseurl);
+			if (stripos($parseurl, 'DownloadCfg/RouterCfm.cfg') !== FALSE ) {
+				curl_setopt($ch, CURLOPT_URL, $parseurl);
+				$html = curl_exec($ch);
+				$formatdate = date("Ymd")."-".date("His");
+              	file_put_contents('/var/www/html/plugins/tendaac/data/backup/RouterCfm-'.$formatdate.'.cfg', $html);
+
+				if (file_exists('/var/www/html/plugins/tendaac/data/backup/RouterCfm-'.$formatdate.'.cfg')) {
+				log::add('tendaac','debug','Fichier de config créé : RouterCfm-'.$formatdate.'.cfg');
+				} else {
+				log::add('tendaac','debug','Fichier non créé');
+				}
+            }
+        	else {
+			curl_setopt($ch, CURLOPT_URL, $parseurl);
+
   			$html = curl_exec($ch);
   			curl_close($ch);
-  			if (stripos($html, 'internetStatus') !== FALSE) {
-          log::add('tendaac','debug','Cookie OK');
-        }
-        else {
-          log::add('tendaac','debug','Cookie NOK');
-				}
+              }
+  			if (stripos($html, 'internetStatus') !== FALSE ) {
+				log::add('tendaac','debug','Cookie OK');
+			}
+			else {
+				log::add('tendaac','debug','Cookie NOK');
+			}
         return $html;
       }
     }
@@ -469,15 +485,17 @@ class tendaacCmd extends cmd
         }
         $url = $eqLogic->getUrl();
         if ( $this->getLogicalId() == 'backup' ) {
-            $url .= "cgi-bin/DownloadCfg/RouterCfm.cfg";
-        }
+          $info = $eqLogic->cookieurl('cgi-bin/DownloadCfg/RouterCfm.cfg?random=0.46529553086082265');
+			log::add('tendaac','debug','Backup config ');
+		}
         else if ( $this->getLogicalId() == 'reboot' ) {
-            $url .= "goform/sysReboot?module1=sysOperate&action=reboot";
+			$url .= "goform/sysReboot?module1=sysOperate&action=reboot";
+			$result = @file_get_contents($url);
+			log::add('tendaac','debug','get '.preg_replace("/:[^:]*@/", ":XXXX@", $url));
         }
         else
             return false;
-        log::add('tendaac','debug','get '.preg_replace("/:[^:]*@/", ":XXXX@", $url));
-        $result = @file_get_contents($url);
+
         if ( $result === false ) {
             return false;
         }

@@ -21,7 +21,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
             </ul>
         </div>
     </div>
-
     <div class="col-lg-9 col-md-9 col-sm-8 eqLogicThumbnailDisplay" style="border-left: solid 1px #EEE; padding-left: 25px;">
         <legend><i class="fa fa-cog"></i>  {{Gestion}}</legend>
         <div class="eqLogicThumbnailContainer">
@@ -69,7 +68,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
             ?>
         </div>
     </div>
-
     <div class="col-lg-10 col-md-9 col-sm-8 eqLogic" style="border-left: solid 1px #EEE; padding-left: 25px;display: none;">
         <a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder}}</a>
 		<a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer}}</a>
@@ -146,10 +144,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         </div>
                     </fieldset>
                 </form>
-
-
-
-
 			<div class="col-sm-6">
 					<form class="form-horizontal">
 						<legend>{{Configuration du plugin}}
