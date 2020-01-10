@@ -402,26 +402,41 @@ class tendaac extends eqLogic {
         $statuscmd->event(1);
       }
       $arr = json_decode($info, true);
+
       $routername = $this->getCmd(null, 'routername');
-      if ( $routername->execCmd() != $routername->formatValue($arr["deviceStastics"]["routerName"]) ) {
+     // if ( $routername->execCmd() != $routername->formatValue($arr["deviceStastics"]["routerName"]) ) {
         $routername->setCollectDate('');
         $routername->event($arr["deviceStastics"]["routerName"]);
-      }
+      //}
+
       $softversion = $this->getCmd(null, 'softversion');
       $softversion->setCollectDate('');
       $softversion->event($arr["systemInfo"]["softVersion"]);
+
       $wifien = $this->getCmd(null, 'wifien');
-      $wifien->setCollectDate('');
-      $wifien->event($arr["wifiBasicCfg"]["wifiEn"]);
+	  if ( $arr["wifiBasicCfg"]["wifiEn"] == "true" ) {
+        $wifien->setCollectDate('');
+        $wifien->event(1);
+      } else {
+      	$wifien->setCollectDate('');
+        $wifien->event(0);
+      }
       $wifien5g = $this->getCmd(null, 'wifien5g');
-      $wifien5g->setCollectDate('');
-      $wifien5g->event($arr["wifiBasicCfg"]["wifiEn_5G"]);
+	  if ( $arr["wifiBasicCfg"]["wifiEn_5G"] == "true" ) {
+        $wifien5g->setCollectDate('');
+        $wifien5g->event(1);
+      } else {
+      	$wifien5g->setCollectDate('');
+        $wifien5g->event(0);
+      }
       $wifissid = $this->getCmd(null, 'wifissid');
       $wifissid->setCollectDate('');
       $wifissid->event($arr["wifiBasicCfg"]["wifiSSID"]);
+
       $wifissid5g = $this->getCmd(null, 'wifissid5g');
       $wifissid5g->setCollectDate('');
       $wifissid5g->event($arr["wifiBasicCfg"]["wifiSSID_5G"]);
+
       $wifistatus = $this->getCmd(null, 'wifistatus');
       if ( $wifistatus->execCmd() != $wifistatus->formatValue($regs[1]) ) {
         $wifistatus->setCollectDate('');
@@ -442,15 +457,6 @@ class tendaacCmd extends cmd
                 return 0;
             } else {
                 return 1;
-            }
-        }
-        elseif ($this->getLogicalId() == 'wifien' || $this->getLogicalId() == 'wifien5g') {
-            if ( $_value == true ) {
-				log::add('tendaac','debug','WiFi '.$this->getLogicalId().' = '.$_value);
-                return 1;
-            } else {
-				log::add('tendaac','debug','WiFi '.$this->getLogicalId().' = '.$_value);
-                return 0;
             }
         }
         return $_value;
