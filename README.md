@@ -12,14 +12,19 @@ Vous trouverez la documentation [ici](https://github.com/Flobul/Jeedom-TendaAC/t
 
 ### Prévisualisation
 
-<img src="docs/images/tendaac_screenshot1.jpg" align="center">
+<img src="docs/images/tendaac_screenshot1.png" align="center">
+
+<img src="docs/images/tendaac_screenshot2.png" align="center">
 
 
 ### Fonctions disponibles
 
 Infos :
-* Status de la borne
-* Status du Wifi
+* Etat du routeur
+* Etat du Wifi
+* Nom du routeur
+* Nom des SSiD WiFi
+* Version de firmware
 
 Actions :
 * Reboot
