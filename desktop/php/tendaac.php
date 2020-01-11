@@ -186,11 +186,12 @@ Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em
                 <select class="form-control" id="sel_restoreBackupTenda">
 					<option value="">Aucune</option>
 					<?php
+                      	$path = '/var/www/html/';
 						$directory = 'plugins/tendaac/data/backup/';
 						$scanned_directory = preg_grep('~\.(cfg)$~',(scandir($directory)));
                           foreach ($scanned_directory as $key => $info) {
-                              echo '<option value="' . $directory . $info . '">' . $info . '</option>';
-                          }
+                              echo '<option value="' . $path . $directory . $info . '">' . $info . '</option>';
+							}
                       ?>
                       </select>
               </div>
@@ -208,12 +209,14 @@ Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em
               <div class="col-sm-6 col-xs-12">
                 <a class="btn btn-success" id="bt_downloadBackupTenda" style="width:100%;"><i class="fas fa-cloud-download-alt"></i> Télécharger la sauvegarde</a>
               </div>
-           </div>
-
+              <div class="col-sm-6 col-xs-12">
+                <a class="btn btn-default" id="bt_createBackupTenda" style="width:100%;"><i class="fas fa-cloud-upload-alt"></i> Lancer la sauvegarde</a>
+          </div>
+        </div>
 			</fieldset>
 			</form>
 		</div>
-  </div>
+		</div>
 
         <div role="tabpanel" class="tab-pane" id="commandtab">
                 <table id="table_cmd" class="table table-bordered table-condensed">

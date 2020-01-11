@@ -127,12 +127,38 @@ $('#bt_downloadBackupTenda').on('click', function() {
       }
 });
 
+function checkRemoveFile(url) {
+	$('#div_alert').showAlert({message: '{{Suppression en cours}}', level: 'warning'});
+	$.ajax({
+		type: "POST",
+		url: "plugins/tendaac/core/ajax/tendaac.ajax.php",
+		data: {
+			action: "checkRemoveFile",
+          	url: url,
+		},
+		dataType: 'json',
+		global: false,
+		error: function (request, status, error) {
+			handleAjaxError(request, status, error);
+		},
+		success: function (data) {
+			$('#div_alert').showAlert({message: 'Fichier de configuration supprimé avec succès !', level: 'success'});
+          // fonction pour mettre à jour la liste
+		}
+
+	});
+}
+
 $('#bt_removeBackupTenda').on('click', function() {
+   var url = $('#sel_restoreBackupTenda option:selected').text();
     $('#md_modal').dialog({title: "{{Supprimer la sauvegarde}}"});
-    bootbox.confirm('{{Etes-vous sûr de vouloir supprimer la sauvegarde sélectionnée : }}', function (result) {
-
-        if (result) {
-        }
-    });
-
+	if($('#sel_restoreBackupTenda').value() != ''){
+    bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer la sauvegarde suivante :}} <b>' + $('#sel_restoreBackupTenda option:selected').text() + '</b> ?<br/>{{Une fois lancée cette opération ne peut être annulée.}}',
+        function (result) {
+            if (result) {
+  				$('#div_alert').showAlert({message: url, level: 'danger'});
+              checkRemoveFile(url);
+          }
+      });
+    }
 });

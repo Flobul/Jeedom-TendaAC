@@ -198,6 +198,7 @@ class tendaac extends eqLogic {
           throw new Exception(__('Le routeur Tenda ne repond pas ou le compte est incorrect.',__FILE__));
         }
     }
+
     public function cookieurl($parseurl) {
       $authurl = $this->getUrl(). 'login/Auth';
       $parseurl = $this->getUrl(). $parseurl;
@@ -394,6 +395,19 @@ class tendaac extends eqLogic {
             $wifissid5g->save();
         }
     }
+
+    public function checkRemoveFile($url) {
+     if (file_exists('/var/www/html/plugins/tendaac/data/backup/'.$url)) {
+        unlink( '/var/www/html/plugins/tendaac/data/backup/'.$url );
+		log::add('tendaac','debug','Fichier de config supprimé => '.$url);
+       return 1;
+     }
+      else {
+        log::add('tendaac','debug','Erreur : le fichier de config n\'existe pas => '.$url);
+        return;
+		}
+    }
+
     public function event() {
         foreach (eqLogic::byType('tendaac') as $eqLogic) {
             if ( $eqLogic->getId() == init('id') ) {
@@ -460,6 +474,7 @@ class tendaac extends eqLogic {
       }
     }
   }
+
     /*     * **********************Getteur Setteur*************************** */
 }
 class tendaacCmd extends cmd
