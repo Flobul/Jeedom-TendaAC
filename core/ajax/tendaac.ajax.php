@@ -30,13 +30,13 @@ try {
 		$arr = ajax::success(tendaac::checkRemoveFile(init('url')));
 		$return['cmd'] = array();
 		foreach ($arr as $cmd) {
-          	log::add('tendaac', 'debug', "errorr".$cmd);
-            $return['cmd'][] = $cmd;
-        }
-        ajax::success($return);
-	}
+      log::add('tendaac', 'debug', "errorr".$cmd);
+      $return['cmd'][] = $cmd;
+    }
+    ajax::success($return);
+  }
 
-	throw new Exception('Aucune methode correspondante');
+  throw new Exception('Aucune methode correspondante');
 	/*     * *********Catch exeption*************** */
 } catch (Exception $e) {
 	ajax::error(displayExeption($e), $e->getCode());
