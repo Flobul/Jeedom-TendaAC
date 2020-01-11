@@ -103,8 +103,8 @@ function addCmdToTable(_cmd) {
                 $('#div_alert').showAlert({message: error.message, level: 'danger'});
             },
             success: function (result) {
-                tr.find('.cmdAttr[data-l1key=value]').append(result);
-                tr.setValues(_cmd, '.cmdAttr');
+              tr.find('.cmdAttr[data-l1key=value]').append(result);
+              tr.setValues(_cmd, '.cmdAttr');
             }
         });
     }
@@ -145,20 +145,19 @@ function checkRemoveFile(url) {
 			$('#div_alert').showAlert({message: 'Fichier de configuration supprimé avec succès !', level: 'success'});
           // fonction pour mettre à jour la liste
 		}
-
 	});
 }
 
 $('#bt_removeBackupTenda').on('click', function() {
-   var url = $('#sel_restoreBackupTenda option:selected').text();
-    $('#md_modal').dialog({title: "{{Supprimer la sauvegarde}}"});
-	if($('#sel_restoreBackupTenda').value() != ''){
+  var url = $('#sel_restoreBackupTenda option:selected').text();
+  $('#md_modal').dialog({title: "{{Supprimer la sauvegarde}}"});
+  if($('#sel_restoreBackupTenda').value() != ''){
     bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer la sauvegarde suivante :}} <b>' + $('#sel_restoreBackupTenda option:selected').text() + '</b> ?<br/>{{Une fois lancée cette opération ne peut être annulée.}}',
-        function (result) {
-            if (result) {
-  				$('#div_alert').showAlert({message: url, level: 'danger'});
-              checkRemoveFile(url);
-          }
-      });
-    }
+    function (result) {
+      if (result) {
+        $('#div_alert').showAlert({message: url, level: 'danger'});
+        checkRemoveFile(url);
+      }
+    });
+  }
 });
