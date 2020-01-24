@@ -1,6 +1,8 @@
 Présentation
 ============
 
+![Logo plugin](../assets/images/tendaac_icon.png "Logo plugin")
+
 Ce plugin permet de gérer les routeurs Tenda AC.
 
 Il permet de redémarrer le routeur et de sauvegarder sa configuration.
@@ -30,6 +32,10 @@ Puis définir :
 
 -   *''Rafraichissement*''(par défaut sur 1 heure)
 
+Dashboard
+===
+
+![Visuel du dashboard](../assets/images/tendaac_screenshot1.png "Visuel du dashboard")
 
 FAQ
 ===
@@ -38,7 +44,7 @@ A quelle fréquence les données sont-elles mises à jour ?
 -------------------------------------------------------
 
 Les données sont rafraichies toutes les heures par défaut.
-Selectionnez la fréquence de rafraichissement des informations via la page Èquipement.
+Selectionnez la fréquence de rafraichissement des informations via la page Équipement.
 
 Ce plugin ne génère pas de log, comment en avoir ?
 --------------------------------------------------
@@ -49,6 +55,6 @@ J'aimerais remonter des erreurs/modifications directement dans le code ?
 C’est tout à fait possible via
 [github](https://github.com/Flobul/Jeedom-TendaAC/)
 
-Ou trouver le changelog
+Où trouver le changelog
 -----------------------
 [Ici](https://github.com/Flobul/Jeedom-TendaAC/blob/master/docs/fr_FR/changelog.md)
