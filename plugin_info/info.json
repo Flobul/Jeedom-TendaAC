@@ -9,8 +9,8 @@
     "hasDependency" : false,
     "hasOwnDeamon" : false,
     "maxDependancyInstallTime" : 0,
-    "changelog" : "https://github.com/Flobul/Jeedom-TendaAC/blob/master/docs/fr_FR/changelog.md",
-    "documentation" : "https://github.com/Flobul/Jeedom-TendaAC/tree/master/docs/fr_FR/index.md",
+    "changelog" : "https://flobul.github.io/Jeedom-TendaAC/fr_FR/changelog",
+    "documentation" : "https://flobul.github.io/Jeedom-TendaAC/fr_FR/",
   	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"]
 
 }
