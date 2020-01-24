@@ -1,7 +1,7 @@
 Présentation
 ============
 
-![Logo plugin](../assets/images/tendaac_icon.png "Logo plugin")
+![Logo plugin](../images/tendaac_icon.png "Logo plugin")
 
 Ce plugin permet de gérer les routeurs Tenda AC.
 
@@ -35,7 +35,7 @@ Puis définir :
 Dashboard
 ===
 
-![Visuel du dashboard](../assets/images/tendaac_screenshot1.png "Visuel du dashboard")
+![Visuel du dashboard](../images/tendaac_screenshot1.png "Visuel du dashboard")
 
 FAQ
 ===
