@@ -1,3 +1,3 @@
-Changelog
+Liste des versions
 ==========
-Full detail of updates on  https://github.com/Flobul/Jeedom-TendaAC/commits/master
+Détail complet des mise à jour sur https://github.com/Flobul/Jeedom-TendaAC/commits/master
