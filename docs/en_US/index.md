@@ -13,7 +13,7 @@ Installation/Parameter
 
 We will now configure a device. To do so, click on *''Plugins / Communication / Tenda AC''*
 
-Then click on the button at the top left "*''Add equipment''*"
+Then click on the button at the top left *''Add equipment''*
 
 Then enter the name of the equipment (eg Tenda AC1200)
 
@@ -59,4 +59,4 @@ It is entirely possible via
 
 ### List of versions
 
-* [See list of versions] (changelog.md) *
+*[See list of versions](changelog.md) *
