@@ -55,7 +55,7 @@ It is necessary to temporarily activate the Jeedom debug (Configuration menu ⇒
 ### I would like to report errors / modifications directly in the code?
 -------------------------------------------------- ---------------------
 It is entirely possible via
-[Github] (https://github.com/Flobul/Jeedom-TendaAC/)
+[Github](https://github.com/Flobul/Jeedom-TendaAC/)
 
 ### List of versions
 
