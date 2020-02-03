@@ -1,62 +1,62 @@
-Présentation
+
+Presentation
 ============
 
 ![Logo plugin](../images/tendaac_icon.png "Logo plugin")
 
-Ce plugin permet de gérer les routeurs Tenda AC.
+This plugin is used to manage Tenda AC routers.
 
-Il permet de redémarrer le routeur et de sauvegarder sa configuration.
+It allows you to restart the router and save its configuration.
 
-Installation/Paramétrage
+Installation/Parameter
 ========================
 
-Nous allons maintenant paramétrer un équipement. Pour se faire, cliquez sur *''Plugins / Communication / Tenda AC''
+We will now configure a device. To do so, click on *''Plugins / Communication / Tenda AC''*
 
-Puis cliquez sur le bouton en haut à gauche "*''Ajouter un équipement*''"
+Then click on the button at the top left "*''Add equipment''*"
 
-Puis saisir le nom de l'équipement (ex. Tenda AC1200)
+Then enter the name of the equipment (eg Tenda AC1200)
 
-Puis définir :
+Then define:
 
--   *''Objet parent*''
+- *''Parent object''*
 
--   *''Catégorie '*'(optionnelle)
+- *''Category''* (optional)
 
--   *''Activer '*'(à cocher, sinon l’équipement ne sera pas utilisable)
+- *''Activate''* (check, otherwise the equipment will not be usable)
 
--   *''Visible '*'(optionel si vous ne désirez pas le rendre visible sur le Dashboard)
+- *''Visible''* (optional if you don't want to make it visible on the Dashboard)
 
--   *''Adresse IP*''
+- *''IP adress''*
 
--   *''Mot de passe*''(optionnel si votre routeur n'en a pas)
+- *''Password''* (optional if your router does not have one)
 
--   *''Rafraichissement*''(par défaut sur 1 heure)
+- *''Refreshment''* (by default: 1 hour)
 
-![Page de configuration](../images/tendaac_screenshot1.png "Page de configuration")
+![Configuration](../images/tendaac_screenshot1.png "Configuration")
 
 Dashboard
 ===
 
-![Visuel du dashboard](../images/Dashboard.png "Visuel du dashboard")
+![Dashboard visual](../images/Dashboard.png "Visuel du dashboard")
 
 ### FAQ
 ===
 
-### A quelle fréquence les données sont-elles mises à jour ?
--------------------------------------------------------
+### How often is the data updated?
+-------------------------------------------------- -----
+Data is refreshed every hour by default.
+Select the refresh rate of the information via the Equipment page.
 
-Les données sont rafraichies toutes les heures par défaut.
-Selectionnez la fréquence de rafraichissement des informations via la page Équipement.
-
-### Ce plugin ne génère pas de log, comment en avoir ?
+### This plugin does not generate a log, how can I get one?
 --------------------------------------------------
-Il est nécessaire au préalable d’activer temporairement le debug de Jeedom (menu Configuration ⇒ Configuration des logs & messages ⇒ Activer + Niveau de log = Debug).
+It is necessary to temporarily activate the Jeedom debug (Configuration menu ⇒ Configuration of logs & messages ⇒ Activate + Log level = Debug).
 
-### J'aimerais remonter des erreurs/modifications directement dans le code ?
------------------------------------------------------------------------
-C’est tout à fait possible via
-[github](https://github.com/Flobul/Jeedom-TendaAC/)
+### I would like to report errors / modifications directly in the code?
+-------------------------------------------------- ---------------------
+It is entirely possible via
+[Github] (https://github.com/Flobul/Jeedom-TendaAC/)
 
-### Liste des versions
+### List of versions
 
-*[Voir la liste des versions](changelog.md)*
+* [See list of versions] (changelog.md) *
