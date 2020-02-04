@@ -58,4 +58,4 @@ Es completamente posible a través de
 
 ### Lista de versiones
 
-* [Ver lista de versiones] (changelog.md) *
+*[Ver lista de versiones] (changelog.md) *
