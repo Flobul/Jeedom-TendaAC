@@ -1,54 +1,61 @@
-Plugin Optoma
-=============
+Presentación
+============
 
-![Complemento de logotipo](../assets/images/Jailbreak_icon.png "Complemento de logotipo")
+![Complemento de logotipo](../images/tendaac_icon.png "Complemento de logotipo")
 
-Este complemento monitorea y controla el iPhone / iPad de Apple.
+Este complemento se utiliza para administrar los enrutadores de CA Tenda.
 
-> ** Nota **
-> Primero, debe instalar el ajuste OpenSSH en su dispositivo.
+Le permite reiniciar el enrutador y guardar su configuración.
 
-** Funcionalidad: **
+Instalación / Parámetro
+========================
 
-- Prender apagar,
-- mostrar información de hardware,
-- desbloquear el dispositivo,
-- Inicie aplicaciones de forma remota.
+Ahora configuraremos un dispositivo. Para hacerlo, haga clic en *'' Complementos / Comunicación / Tenda AC ''*
 
-**Compatibilidad**
-- Todos los iPad/iPhone
+Luego haga clic en el botón en la parte superior izquierda *'' Agregar equipo ''*
+
+Luego ingrese el nombre del equipo (por ejemplo, Tenda AC1200)
+
+Luego defina:
+
+- *'' Objeto principal ''*
+
+- *'' Categoría ''* (opcional)
+
+- *'' Activar ''* (marcar, de lo contrario el equipo no será utilizable)
+
+- *'' Visible ''* (opcional si no desea que sea visible en el Tablero)
+
+- *''Dirección IP''*
+
+- *'' Contraseña ''* (opcional si su enrutador no tiene una)
+
+- *'' Refresco ''* (por defecto: 1 hora)
+
+![Configuración](../images/tendaac_screenshot1.png "Configuración")
 
 Tablero
-=========
+===
 
-![Dashboard visual](../assets/images/Dashboard.png "Dashboard")
+![Dashboard visual](../images/Dashboard.png "Visuel du dashboard")
 
-Configuración del complemento
-=======================
+### PREGUNTAS MÁS FRECUENTES
+===
 
-Primero descargue el complemento, luego actívelo.
+### ¿Con qué frecuencia se actualizan los datos?
+-------------------------------------------------- -----
+Los datos se actualizan cada hora de forma predeterminada.
+Seleccione la frecuencia de actualización de la información a través de la página Equipo.
 
-Configuración del equipo
-=============================
+### Este complemento no genera un registro, ¿cómo puedo obtener uno?
+--------------------------------------------------
+Es necesario activar temporalmente la depuración de Jeedom (Menú de configuración ⇒ Configuración de registros y mensajes ⇒ Activar + Nivel de registro = Depurar).
 
-Se puede acceder a la configuración del equipo mediante Menú *Complementos> Monitoreo> Jailbreak*.
+### ¿Me gustaría informar errores / modificaciones directamente en el código?
+-------------------------------------------------- ---------------------
+Es completamente posible a través de
+[Github] (https://github.com/Flobul/Jeedom-TendaAC/)
 
-### Equipo de pestañas:
+### Lista de versiones
 
-- **Nombre del equipo**: nombre de su equipo,
-- **Objeto padre**: indica el objeto padre al que pertenece el equipo,
-- **Categoría**: las categorías del equipo (puede pertenecer a varias categorías),
-- **Activar**: para activar su equipo,
-- **Visible**: hace que su equipo sea visible en el tablero,
-- **Dirección IP**: dirección IP del equipo,
-- **Dirección del puerto SSH**: puerto SSH del equipo (instale OpenSSH Tweak en el dispositivo),
-- **Inicio de sesión**: inicio de sesión SSH (predeterminado: raíz),
-- **Contraseña**: contraseña SSH asociada con el inicio de sesión (predeterminado: alpine).
-
-### Comandos de pestañas
-
-Los comandos se crean automáticamente.
-
-### Registro de cambios
-
-*[Ver registro de cambios](changelog.md) *
+* [Ver lista de versiones] (changelog.md) *
