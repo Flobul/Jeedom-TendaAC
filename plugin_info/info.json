@@ -11,6 +11,5 @@
     "maxDependancyInstallTime" : 0,
     "changelog" : "https://flobul.github.io/Jeedom-TendaAC/#language#/changelog",
     "documentation" : "https://flobul.github.io/Jeedom-TendaAC/#language#/",
-  	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"]
-
+    "compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"]
 }
