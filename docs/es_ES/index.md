@@ -54,8 +54,8 @@ Es necesario activar temporalmente la depuración de Jeedom (Menú de configurac
 ### ¿Me gustaría informar errores / modificaciones directamente en el código?
 -------------------------------------------------- ---------------------
 Es completamente posible a través de
-[Github] (https://github.com/Flobul/Jeedom-TendaAC/)
+[Github](https://github.com/Flobul/Jeedom-TendaAC/)
 
 ### Lista de versiones
 
-*[Ver lista de versiones] (changelog.md) *
+*[Ver lista de versiones](changelog.md) *
