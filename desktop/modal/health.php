@@ -30,7 +30,7 @@ $eqLogics = tendaac::byType('tendaac');
 			<th>{{Statut}}</th>
 			<th>{{WiFi}}</th>
 			<th>{{Dernière communication}}</th>
-			<th>{{Date création}}</th>
+			<th>{{Date de création}}</th>
 		</tr>
 	</thead>
 	<tbody>

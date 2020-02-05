@@ -1,33 +1,42 @@
 {
-    "plugins\/bornetenda\/desktop\/php\/bornetenda.php": {
-        "Ajouter une borne tenda": "Add a Tenda access point",
-        "Mes bornes tenda": "My Tenda access points",
-        "Vous n'avez pas encore de borne tenda, cliquez sur Ajouter un équipement pour commencer": "You have not configured any Tenda access points. Click Add a device to start",
+    "plugins\/tendaac\/desktop\/php\/tendaac.php": {
+        "Ajouter un routeur": "Add a device",
+        "Rechercher": "Search",
+        "Configuration": "Configuration",
+        "Santé": "Health",
+        "Mes routeurs Tenda": "My routeurs",
+        "Vous n'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer": "You have no router yet, click Add a device to start",
+        "Sauvegarder": "Save",
+        "Supprimer": "Delete",
+        "Configuration avancée": "Advanced configuration",
+        "Equipement": "Equipment",
+        "Commandes": "Commands",
         "Général": "Main",
-        "Nom de la borne borne tenda": "Name of the Tenda access point",
+        "Nom du routeur Tenda": "Routeur name",
         "Objet parent": "Parent object",
         "Aucun": "None",
         "Catégorie": "Category",
         "Activer": "Activate",
-        "Accéder à la carte": "Access the map",
         "Visible": "Visible",
-        "IP de la borne tenda": "Tenda access point IP",
-        "Compte de la borne tenda": "Tenda access point username",
-        "Password de la borne tenda": "Tenda access point password",
-        "Indicateurs": "Indicators",
+        "Accéder à la page web": "Access the web page",
+        "IP du routeur Tenda": "Router IP",
+        "Mot de passe du routeur Tenda": "Router password",
+        "Rafraîchissement des informations": "Refresh interval",
+        "Non": "No",
+        "Toutes les minutes": "Every minutes",
+        "Toutes les 5 minutes": "Every 5 minutes",
+        "Toutes les 10 minutes": "Every 10 minutes",
+        "Toutes les 15 minutes": "Every 15 minutes",
+        "Toutes les 30 minutes": "Every 30 minutes",
+        "Toutes les heures": "Every hours",
         "Nom": "Name",
-        "Sous-Type": "Sub-Type",
+        "Sous-Type": "Subtype",
         "Valeur": "Value",
         "Unité": "Unit",
         "Paramètres": "Settings",
-        "Supprimer": "Delete",
-        "Sauvegarder": "Save",
-        "Ajouter une borne": "Add an access point",
-        "Rechercher": "Search",
-        "Gestion": "Management",
-        "Configuration": "Configuration"
+        "Gestion": "Management"
     },
-    "plugins\/bornetenda\/desktop\/js\/bornetenda.js": {
+    "plugins\/tendaac\/desktop\/js\/tendaac.js": {
         "Nom": "Name",
         "Calcul": "Calculation",
         "Min": "Min",
@@ -35,10 +44,28 @@
         "Historiser": "Historize",
         "Afficher": "Display",
         "Tester": "Test",
-        "Accèder à l'interface de la borne": "Open access point interface"
+        "Accéder à l'interface du routeur": "Access router interface",
+        "Santé Tenda AC": "Health Tenda AC",
+        "Télécharger la sauvegarde": "Download the backup",
+        "Suppression en cours": "Deleting",
+        "Supprimer la sauvegarde": "Delete the backup",
+        "Êtes-vous sûr de vouloir supprimer la sauvegarde suivante :": "Are you sure you want to delete this backup :",
+        "Une fois lancée, cette opération ne peut être annulée.": "However this action cannot be reversed."
     },
-    "plugins\/bornetenda\/core\/class\/bornetenda.class.php": {
-        "La borne tenda ne repond pas ou le compte est incorrect.": "The Tenda access point is not responding or the credentials are incorrect.",
-        "La borne tenda ne repond pas.": "The tenda access point does not respond."
+    "plugins\/tendaac\/core\/class\/tendaac.class.php": {
+        "Le routeur Tenda ne repond pas ou le compte est incorrect.": "The Tenda access point is not responding or the credentials are incorrect.",
+        "Le routeur Tenda ne repond pas.": "Tenda router does not responds.",
+        "Equipement desactivé impossible d\éxecuter la commande": "Can not execute command while the device is deactivated"
+    },
+    "plugins\/tendaac\/desktop\/js\/tendaac.js": {
+        "Module": "Module",
+        "ID": "ID",
+        "IP": "IP",
+        "Status": "Status",
+        "WiFi": "WiFi",
+        "Dernière communication": "Last communication",
+        "Date de création": "Creation date",
+        "Présent": "Present",
+        "Absent": "Absent"
     }
 }
