@@ -5,7 +5,7 @@
         "Configuration": "Configuration",
         "Santé": "Santé",
         "Mes routeurs Tenda": "Mes routeurs Tenda",
-        "Vous n'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer": "Vous n'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer",
+        "Vous n\\'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer": "Vous n\\'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer",
         "Sauvegarder": "Sauvegarder",
         "Supprimer": "Supprimer",
         "Configuration avancée": "Configuration avancée",
@@ -44,7 +44,7 @@
         "Historiser": "Historiser",
         "Afficher": "Afficher",
         "Tester": "Tester",
-        "Accéder à l'interface du routeur": "Accéder à l'interface du routeur",
+        "Accéder à l\\'interface du routeur": "Accéder à l\\'interface du routeur",
         "Santé Tenda AC": "Santé Tenda AC",
         "Télécharger la sauvegarde": "Télécharger la sauvegarde",
         "Suppression en cours": "Suppression en cours",
@@ -55,9 +55,9 @@
     "plugins\/tendaac\/core\/class\/tendaac.class.php": {
         "Le routeur Tenda ne repond pas ou le compte est incorrect.": "Le routeur Tenda ne repond pas ou le compte est incorrect.",
         "Le routeur Tenda ne repond pas.": "Le routeur Tenda ne repond pas.",
-        "Equipement desactivé impossible d\éxecuter la commande": "Equipement desactivé impossible d\éxecuter la commande"
+        "Equipement desactivé impossible d\\'éxecuter la commande": "Equipement desactivé impossible d\\'éxecuter la commande"
     },
-    "plugins\/tendaac\/desktop\/js\/tendaac.js": {
+    "plugins\/tendaac\/desktop\/modal\/health.js": {
         "Module": "Module",
         "ID": "ID",
         "IP": "IP",
