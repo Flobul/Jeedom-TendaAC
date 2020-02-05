@@ -152,7 +152,7 @@ $('#bt_removeBackupTenda').on('click', function() {
   var url = $('#sel_restoreBackupTenda option:selected').text();
   $('#md_modal').dialog({title: "{{Supprimer la sauvegarde}}"});
   if($('#sel_restoreBackupTenda').value() != ''){
-    bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer la sauvegarde suivante :}} <b>' + $('#sel_restoreBackupTenda option:selected').text() + '</b> ?<br/>{{Une fois lancée cette opération ne peut être annulée.}}',
+    bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer la sauvegarde suivante :}} <b>' + $('#sel_restoreBackupTenda option:selected').text() + '</b> ?<br/>{{Une fois lancée, cette opération ne peut être annulée.}}',
     function (result) {
       if (result) {
         $('#div_alert').showAlert({message: url, level: 'danger'});
