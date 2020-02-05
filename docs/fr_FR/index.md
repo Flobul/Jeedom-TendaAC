@@ -32,29 +32,31 @@ Puis définir :
 
 -   *''Rafraichissement*''(par défaut sur 1 heure)
 
+![Page de configuration](../images/tendaac_screenshot1.png "Page de configuration")
+
 Dashboard
 ===
 
-![Visuel du dashboard](../images/tendaac_screenshot1.png "Visuel du dashboard")
+![Visuel du dashboard](../images/Dashboard.png "Visuel du dashboard")
 
-FAQ
+### FAQ
 ===
 
-A quelle fréquence les données sont-elles mises à jour ?
+### A quelle fréquence les données sont-elles mises à jour ?
 -------------------------------------------------------
 
 Les données sont rafraichies toutes les heures par défaut.
 Selectionnez la fréquence de rafraichissement des informations via la page Équipement.
 
-Ce plugin ne génère pas de log, comment en avoir ?
+### Ce plugin ne génère pas de log, comment en avoir ?
 --------------------------------------------------
 Il est nécessaire au préalable d’activer temporairement le debug de Jeedom (menu Configuration ⇒ Configuration des logs & messages ⇒ Activer + Niveau de log = Debug).
 
-J'aimerais remonter des erreurs/modifications directement dans le code ?
+### J'aimerais remonter des erreurs/modifications directement dans le code ?
 -----------------------------------------------------------------------
 C’est tout à fait possible via
 [github](https://github.com/Flobul/Jeedom-TendaAC/)
 
-Où trouver le changelog
------------------------
-[Ici](https://github.com/Flobul/Jeedom-TendaAC/blob/master/docs/fr_FR/changelog.md)
+### Liste des versions
+
+*[Voir la liste des versions](changelog.md)*
