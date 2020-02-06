@@ -210,7 +210,8 @@ class tendaac extends eqLogic {
 		$password = $this->getConfiguration('password');
 				$password = base64_encode($password);
 				$postinfo = "password=".$password;
-				$cookie_file_path = "cookie.txt";
+				$temp_dir = jeedom::getTmpFolder('tendaac');
+				$cookie_file_path = $temp_dir.'/'."cookie.txt";
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_HEADER, false);
 				curl_setopt($ch, CURLOPT_NOBODY, false);

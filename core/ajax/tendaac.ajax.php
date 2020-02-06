@@ -42,9 +42,10 @@ try {
 			if ($eqLogic->getId() == init('id')) {
 			$backup = $eqLogic->getCmd(null, 'backup');
 			$backup->execCmd();
-			log::add('tendaac','debug','Lancement backup par page accueil : ');
+			log::add('tendaac','debug','Lancement backup par page accueil');
 			}
 		}
+		ajax::success($return);
 	}
 
   throw new Exception('Aucune methode correspondante');
