@@ -134,7 +134,7 @@ $('#bt_createBackupTenda').off().on('click', function (event) {
              		type: "POST",
              		url: "plugins/tendaac/core/ajax/tendaac.ajax.php",
              		data: {
-             			action: "createBackup"
+             			action: "createBackup",
              		},
              		dataType: 'json',
              		global: false,

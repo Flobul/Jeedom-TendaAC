@@ -226,7 +226,7 @@ class tendaac extends eqLogic {
 				curl_setopt($ch, CURLOPT_URL, $parseurl);
 				$html = curl_exec($ch);
 				$formatdate = date("Ymd")."-".date("His");
-								file_put_contents('/var/www/html/plugins/tendaac/data/backup/RouterCfm-'.$formatdate.'.cfg', $html);
+				file_put_contents('/var/www/html/plugins/tendaac/data/backup/RouterCfm-'.$formatdate.'.cfg', $html);
 				if (file_exists('/var/www/html/plugins/tendaac/data/backup/RouterCfm-'.$formatdate.'.cfg')) {
 					log::add('tendaac','debug','Fichier de config créé : RouterCfm-'.$formatdate.'.cfg');
 				} else {
@@ -405,12 +405,15 @@ class tendaac extends eqLogic {
 
 		public function createBackup() {
 			log::add('tendaac','debug','Lancement Backup par page accueil ');
-			foreach(eqLogic::byType('tendaac') as $eqTendaac){
-				if($eqTendaac->getIsEnable()){
-						log::add('tendaac','debug','######### : '.$this->getLogicalId());
-					//	$eqLogic = $this->getEqLogic();
-				}
-			}
+            $eqLogics = self::byType('tendaac');
+            foreach ($eqLogics as $eqLogic) {
+               $backup = $eqLogic->getCmd(null, 'backup');
+               log::add('tendaac','debug','######### : '.$backup->getLogicalId());
+
+              $backup->execCmd();
+
+        }
+
 		}
 
 		public function event() {
