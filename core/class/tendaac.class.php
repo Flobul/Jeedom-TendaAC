@@ -85,6 +85,33 @@ class tendaac extends eqLogic {
 				}
 			}
 		}
+		public function transforme($time) {
+			if ($time>=86400) {
+				$jour = floor($time/86400);
+				$reste = $time%86400;
+				$heure = floor($reste/3600);
+				$reste = $reste%3600;
+				$minute = floor($reste/60);
+				$seconde = $reste%60;
+				$result = $jour.'j '.$heure.'h '.$minute.'min '.$seconde.'s';
+			}
+			elseif ($time < 86400 AND $time>=3600) {
+				$heure = floor($time/3600);
+				$reste = $time%3600;
+				$minute = floor($reste/60);
+				$seconde = $reste%60;
+				$result = $heure.'h '.$minute.'min '.$seconde.' s';
+			}
+			elseif ($time<3600 AND $time>=60) {
+				$minute = floor($time/60);
+				$seconde = $time%60;
+				$result = $minute.'min '.$seconde.'s';
+			}
+			elseif ($time < 60) {
+				$result = $time.'s';
+			}
+			return $result;
+		}	
 		public function getUrl() {
 			$url = 'http://';
 			$url .= $this->getConfiguration('ip');
@@ -502,33 +529,6 @@ class tendaac extends eqLogic {
 				}
 				$ConnectedListTable .=  "</table>";
 
-				function transforme($time) {
-					if ($time>=86400) {
-						$jour = floor($time/86400);
-						$reste = $time%86400;
-						$heure = floor($reste/3600);
-						$reste = $reste%3600;
-						$minute = floor($reste/60);
-						$seconde = $reste%60;
-						$result = $jour.'j '.$heure.'h '.$minute.'min '.$seconde.'s';
-					}
-					elseif ($time < 86400 AND $time>=3600) {
-						$heure = floor($time/3600);
-						$reste = $time%3600;
-						$minute = floor($reste/60);
-						$seconde = $reste%60;
-						$result = $heure.'h '.$minute.'min '.$seconde.' s';
-					}
-					elseif ($time<3600 AND $time>=60) {
-						$minute = floor($time/60);
-						$seconde = $time%60;
-						$result = $minute.'min '.$seconde.'s';
-					}
-					elseif ($time < 60) {
-						$result = $time.'s';
-					}
-					return $result;
-				}
 				log::add('tendaac','debug','Hôtes connectés '.$ConnectedListTable);
 $this->checkAndUpdateCmd('connectedlist', $ConnectedListTable);
 			}
