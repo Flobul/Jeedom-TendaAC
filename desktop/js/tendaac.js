@@ -126,7 +126,7 @@ $('#bt_downloadBackupTenda').on('click', function() {
         window.open('core/php/downloadFile.php?pathfile='+$('#sel_restoreBackupTenda').value());
       }
 });
-$('#bt_createBackupTenda').off().on('click', function (event) {
+$('#bt_createBackupTenda').off().on('click', function () {
      bootbox.confirm('{{Êtes-vous sûr de vouloir créer un backup ? Une fois lancée cette opération ne peut être annulée.}}',
          function (result) {
              if (result) {
@@ -135,6 +135,7 @@ $('#bt_createBackupTenda').off().on('click', function (event) {
              		url: "plugins/tendaac/core/ajax/tendaac.ajax.php",
              		data: {
              			action: "createBackup",
+             			id: $('.eqLogicAttr[data-l1key=id]').value(),
              		},
              		dataType: 'json',
              		global: false,

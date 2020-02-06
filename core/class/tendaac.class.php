@@ -403,19 +403,6 @@ class tendaac extends eqLogic {
 			}
 		}
 
-		public function createBackup() {
-			log::add('tendaac','debug','Lancement Backup par page accueil ');
-            $eqLogics = self::byType('tendaac');
-            foreach ($eqLogics as $eqLogic) {
-               $backup = $eqLogic->getCmd(null, 'backup');
-               log::add('tendaac','debug','######### : '.$backup->getLogicalId());
-
-              $backup->execCmd();
-
-        }
-
-		}
-
 		public function event() {
 			foreach (eqLogic::byType('tendaac') as $eqLogic) {
 				if ( $eqLogic->getId() == init('id') ) {

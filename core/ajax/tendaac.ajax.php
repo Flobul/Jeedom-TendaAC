@@ -39,24 +39,12 @@ try {
 	if (init('action') == 'createBackup') {
 		$eqLogics = eqLogic::byType('tendaac');
 		foreach ($eqLogics as $eqLogic) {
-
+			if ($eqLogic->getId() == init('id')) {
 			$backup = $eqLogic->getCmd(null, 'backup');
-			log::add('tendaac','debug','1######### : '.$backup->getLogicalId());
-
-			if ($eqLogic->getConfiguration('device','') == 'default') {
-				if ($eqLogic->getObject_id()==''){
-					$eqLogic->remove();
-				}
+			$backup->execCmd();
+			log::add('tendaac','debug','Lancement backup par page accueil : ');
 			}
 		}
-		/*		$arr = ajax::success(tendaac::createBackup());
-		$return['cmd'] = array();
-		foreach ($arr as $cmd) {
-			log::add('tendaac', 'debug', "Erreur createBackup : ".$cmd);
-			$return['cmd'][] = $cmd;
-		}
-		ajax::success($return);
-		*/
 	}
 
   throw new Exception('Aucune methode correspondante');
