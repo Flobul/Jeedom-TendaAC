@@ -85,33 +85,7 @@ class tendaac extends eqLogic {
 				}
 			}
 		}
-		public function transforme($time) {
-			if ($time>=86400) {
-				$jour = floor($time/86400);
-				$reste = $time%86400;
-				$heure = floor($reste/3600);
-				$reste = $reste%3600;
-				$minute = floor($reste/60);
-				$seconde = $reste%60;
-				$result = $jour.'j '.$heure.'h '.$minute.'min '.$seconde.'s';
-			}
-			elseif ($time < 86400 AND $time>=3600) {
-				$heure = floor($time/3600);
-				$reste = $time%3600;
-				$minute = floor($reste/60);
-				$seconde = $reste%60;
-				$result = $heure.'h '.$minute.'min '.$seconde.' s';
-			}
-			elseif ($time<3600 AND $time>=60) {
-				$minute = floor($time/60);
-				$seconde = $time%60;
-				$result = $minute.'min '.$seconde.'s';
-			}
-			elseif ($time < 60) {
-				$result = $time.'s';
-			}
-			return $result;
-		}	
+
 		public function getUrl() {
 			$url = 'http://';
 			$url .= $this->getConfiguration('ip');
@@ -512,10 +486,37 @@ class tendaac extends eqLogic {
 					$wifistatus->event($regs[1]);
 				}
 				$arr = json_decode($connected, true);
-				$tabstyle = "<style> th, td { padding : 2px !important; } </style><style> th { text-align:center; } </style><style> td { text-align:left; } </style>";
+				$tabstyle = "<style> th, td { padding : 2px !important; color: #C7C6C6; } </style><style> th { text-align:center; } </style><style> td { text-align:left; } </style>";
 				$ConnectedListTable =	 "$tabstyle<table border=1>";
 				$ConnectedListTable .=  "<tr><th>Nom d'hôte</th><th>@IP</th><th>@MAC</th><th>Durée</th></tr>";
 
+           function transforme($time) {
+			if ($time>=86400) {
+				$jour = floor($time/86400);
+				$reste = $time%86400;
+				$heure = floor($reste/3600);
+				$reste = $reste%3600;
+				$minute = floor($reste/60);
+				$seconde = $reste%60;
+				$result = $jour.'j '.$heure.'h '.$minute.'min '.$seconde.'s';
+			}
+			elseif ($time < 86400 AND $time>=3600) {
+				$heure = floor($time/3600);
+				$reste = $time%3600;
+				$minute = floor($reste/60);
+				$seconde = $reste%60;
+				$result = $heure.'h '.$minute.'min '.$seconde.' s';
+			}
+			elseif ($time<3600 AND $time>=60) {
+				$minute = floor($time/60);
+				$seconde = $time%60;
+				$result = $minute.'min '.$seconde.'s';
+			}
+			elseif ($time < 60) {
+				$result = $time.'s';
+			}
+			return $result;
+		}
 				//print_r(count($arr["onlineList"]));  //nombre de PC connectés
 				$Hostname = array();
 				for($i = 0;$i < count($arr["onlineList"]); $i++){
