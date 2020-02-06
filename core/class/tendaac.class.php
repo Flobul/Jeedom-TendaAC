@@ -391,6 +391,19 @@ class tendaac extends eqLogic {
 						$wifissid5g->setDisplay('generic_type','GENERIC_INFO');
 						$wifissid5g->save();
 				}
+				$connectedlist = $this->getCmd(null, 'connectedlist');
+				if ( ! is_object($connectedlist)) {
+						$connectedlist = new liveboxCmd();
+						$connectedlist->setName('Liste des hôtes connectés');
+						$connectedlist->setEqLogic_id($this->getId());
+						$connectedlist->setLogicalId('connectedlist');
+						$connectedlist->setUnite('');
+						$connectedlist->setType('info');
+						$connectedlist->setSubType('string');
+						$connectedlist->setDisplay('generic_type','GENERIC_INFO');
+						$connectedlist->setIsHistorized(0);
+						$connectedlist->save();
+					}
 		}
 
 		public function checkRemoveFile($url) {
@@ -417,6 +430,8 @@ class tendaac extends eqLogic {
 				$statuscmd = $this->getCmd(null, 'status');
 				$url = $this->getUrl();
 				$info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
+				$connected = $this->cookieurl('goform/getQos?random=0.46529553086082265&modules=onlineList');
+
 				if ( $info === false ) {
 					throw new Exception(__('Le routeur Tenda ne repond pas.',__FILE__));
 					if ($statuscmd->execCmd() != 0) {
@@ -469,6 +484,53 @@ class tendaac extends eqLogic {
 					$wifistatus->setCollectDate('');
 					$wifistatus->event($regs[1]);
 				}
+				$arr = json_decode($connected, true);
+				$tabstyle = "<style> th, td { padding : 2px !important; } </style><style> th { text-align:center; } </style><style> td { text-align:left; } </style>";
+				$ConnectedListTable =	 "$tabstyle<table border=1>";
+				$ConnectedListTable .=  "<tr><th>Nom d'hôte</th><th>@IP</th><th>@MAC</th><th>Durée</th></tr>";
+
+				//print_r(count($arr["onlineList"]));  //nombre de PC connectés
+				$Hostname = array();
+				for($i = 0;$i < count($arr["onlineList"]); $i++){
+					$Hostname[$i] = $arr["onlineList"][$i]["qosListHostname"];
+					$IPAddress[$i] = $arr["onlineList"][$i]["qosListIP"];
+					$MACAddress[$i] = $arr["onlineList"][$i]["qosListMac"];
+					$Timest[$i] = $arr["onlineList"][$i]["qoslistConnetTime"];
+					$Timest[$i] = transforme($Timest[$i]);
+
+					$ConnectedListTable .=  "<tr><td>".$Hostname[$i]."</td><td>".$IPAddress[$i]."</td><td>".$MACAddress[$i]."</td><td>".$Timest[$i]."</td></tr>";
+				}
+				$ConnectedListTable .=  "</table>";
+
+				function transforme($time) {
+					if ($time>=86400) {
+						$jour = floor($time/86400);
+						$reste = $time%86400;
+						$heure = floor($reste/3600);
+						$reste = $reste%3600;
+						$minute = floor($reste/60);
+						$seconde = $reste%60;
+						$result = $jour.'j '.$heure.'h '.$minute.'min '.$seconde.'s';
+					}
+					elseif ($time < 86400 AND $time>=3600) {
+						$heure = floor($time/3600);
+						$reste = $time%3600;
+						$minute = floor($reste/60);
+						$seconde = $reste%60;
+						$result = $heure.'h '.$minute.'min '.$seconde.' s';
+					}
+					elseif ($time<3600 AND $time>=60) {
+						$minute = floor($time/60);
+						$seconde = $time%60;
+						$result = $minute.'min '.$seconde.'s';
+					}
+					elseif ($time < 60) {
+						$result = $time.'s';
+					}
+					return $result;
+				}
+				log::add('tendaac','debug','Hôtes connectés '.$ConnectedListTable);
+$this->checkAndUpdateCmd('connectedlist', $ConnectedListTable);
 			}
 		}
 
