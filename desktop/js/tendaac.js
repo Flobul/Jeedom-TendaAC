@@ -126,6 +126,29 @@ $('#bt_downloadBackupTenda').on('click', function() {
         window.open('core/php/downloadFile.php?pathfile='+$('#sel_restoreBackupTenda').value());
       }
 });
+$('#bt_createBackupTenda').off().on('click', function (event) {
+     bootbox.confirm('{{Êtes-vous sûr de vouloir créer un backup ? Une fois lancée cette opération ne peut être annulée.}}',
+         function (result) {
+             if (result) {
+               $.ajax({
+             		type: "POST",
+             		url: "plugins/tendaac/core/ajax/tendaac.ajax.php",
+             		data: {
+             			action: "createBackup"
+             		},
+             		dataType: 'json',
+             		global: false,
+             		error: function (request, status, error) {
+             			handleAjaxError(request, status, error);
+             		},
+             		success: function (data) {
+             			$('#div_alert').showAlert({message: 'Backup effectué avec succès !', level: 'success'});
+                       // fonction pour mettre à jour la liste
+             		}
+             	});
+             }
+         });
+ });
 
 function checkRemoveFile(url) {
 	$('#div_alert').showAlert({message: '{{Suppression en cours}}', level: 'warning'});
@@ -134,7 +157,7 @@ function checkRemoveFile(url) {
 		url: "plugins/tendaac/core/ajax/tendaac.ajax.php",
 		data: {
 			action: "checkRemoveFile",
-          	url: url,
+			url: url,
 		},
 		dataType: 'json',
 		global: false,

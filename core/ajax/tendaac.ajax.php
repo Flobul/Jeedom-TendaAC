@@ -30,11 +30,22 @@ try {
 		$arr = ajax::success(tendaac::checkRemoveFile(init('url')));
 		$return['cmd'] = array();
 		foreach ($arr as $cmd) {
-      log::add('tendaac', 'debug', "errorr".$cmd);
+      log::add('tendaac', 'debug', "Erreur checkRemoveFile : ".$cmd);
       $return['cmd'][] = $cmd;
     }
     ajax::success($return);
   }
+
+	if (init('action') == 'createBackup') {
+		$url = init('url');
+		$arr = ajax::success(tendaac::createBackup());
+		$return['cmd'] = array();
+		foreach ($arr as $cmd) {
+			log::add('tendaac', 'debug', "Erreur createBackup : ".$cmd);
+			$return['cmd'][] = $cmd;
+		}
+		ajax::success($return);
+	}
 
   throw new Exception('Aucune methode correspondante');
 	/*     * *********Catch exeption*************** */

@@ -403,6 +403,16 @@ class tendaac extends eqLogic {
 			}
 		}
 
+		public function createBackup() {
+			log::add('tendaac','debug','Lancement Backup par page accueil ');
+			foreach(eqLogic::byType('tendaac') as $eqTendaac){
+				if($eqTendaac->getIsEnable()){
+						log::add('tendaac','debug','######### : '.$this->getLogicalId());
+					//	$eqLogic = $this->getEqLogic();
+				}
+			}
+		}
+
 		public function event() {
 			foreach (eqLogic::byType('tendaac') as $eqLogic) {
 				if ( $eqLogic->getId() == init('id') ) {
@@ -492,7 +502,7 @@ class tendaacCmd extends cmd
 		public function execute($_options = null) {
 			$eqLogic = $this->getEqLogic();
 			if (!is_object($eqLogic) || $eqLogic->getIsEnable() != 1) {
-				throw new Exception(__('Equipement desactivé impossible d\éxecuter la commande : ' . $this->getHumanName(), __FILE__));
+				throw new Exception(__('Equipement desactivé impossible d\'éxecuter la commande : ' . $this->getHumanName(), __FILE__));
 			}
 			$url = $eqLogic->getUrl();
 			if ( $this->getLogicalId() == 'backup' ) {
