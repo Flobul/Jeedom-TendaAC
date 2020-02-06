@@ -6,6 +6,7 @@ Liste des versions du plugin Tenda AC.
 Version 1.0
 Ajout boutons raccourcis backup depuis page équipement
 Correction cookie
+Ajout tableau liste des équipements
 
 10/01/2020
 Version 0.9

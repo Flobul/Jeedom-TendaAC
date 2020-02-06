@@ -6,6 +6,7 @@ List of versions of the Tenda AC plugin.
 Version 1.0
 Add backup shortcut buttons from equipment page
 Correction cookie
+Add table equipment list
 
 01/10/2020
 Version 0.9

@@ -6,6 +6,7 @@ Lista de versiones del complemento Tenda AC.
 Version 1.0
 Agregar botones de acceso directo de respaldo desde la página del equipo
 Cookie de corrección
+Agregar lista de equipos de mesa
 
 01/10/2020
 Versión 0.9
