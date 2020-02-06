@@ -35,7 +35,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
         <div class="eqLogicThumbnailContainer">
             <?php
             if (count($eqLogics) == 0) {
-                echo "<br/><br/><br/><center><span style='color:#767676;font-size:1.2em;font-weight: bold;'>{{Vous n'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer}}</span></center>";
+                echo "<br/><br/><br/><center><span style='color:#767676;font-size:1.2em;font-weight: bold;'>{{Vous n\\'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer}}</span></center>";
             } else {
                 foreach ($eqLogics as $eqLogic) {
                     echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
@@ -163,13 +163,13 @@ Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em
 
 		<div class="col-lg-6">
 			<form class="form-horizontal">
-				<legend>Sauvegardes</legend>
+				<legend>{{Sauvegardes}}</legend>
 					<fieldset>
             <div class="form-group">
-              <label class="col-xs-12"><i class="fas fa-tape"></i> Sauvegardes disponibles</label>
+              <label class="col-xs-12"><i class="fas fa-tape"></i> {{Sauvegardes disponibles}}</label>
               <div class="col-xs-12">
                 <select class="form-control" id="sel_restoreBackupTenda">
-                  <option value="">Aucune</option>
+                  <option value="">{{Aucune}}</option>
                   <?php
                   $path = '/var/www/html/';
                   $directory = 'plugins/tendaac/data/backup/';
@@ -184,18 +184,18 @@ Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em
 
             <div class="form-group">
               <div class="col-sm-6 col-xs-12">
-                <a class="btn btn-danger" id="bt_removeBackupTenda" style="width:100%;"><i class="far fa-trash-alt"></i> Supprimer la sauvegarde</a>
+                <a class="btn btn-danger" id="bt_removeBackupTenda" style="width:100%;"><i class="far fa-trash-alt"></i> {{Supprimer la sauvegarde}}</a>
               </div>
               <div class="col-sm-6 col-xs-12">
-                <a class="btn btn-warning" id="bt_restoreBackupTenda" style="width:100%;"><i class="fas fa-sync fa-spin" style="display:none;"></i> <i class="far fa-file"></i> Restaurer la sauvegarde</a>
+                <a class="btn btn-warning" id="bt_restoreBackupTenda" style="width:100%;"><i class="fas fa-sync fa-spin" style="display:none;"></i> <i class="far fa-file"></i> {{Restaurer la sauvegarde}}</a>
               </div>
             </div>
             <div class="form-group">
               <div class="col-sm-6 col-xs-12">
-                <a class="btn btn-success" id="bt_downloadBackupTenda" style="width:100%;"><i class="fas fa-cloud-download-alt"></i> Télécharger la sauvegarde</a>
+                <a class="btn btn-success" id="bt_downloadBackupTenda" style="width:100%;"><i class="fas fa-cloud-download-alt"></i> {{Télécharger la sauvegarde}}</a>
               </div>
               <div class="col-sm-6 col-xs-12">
-                <a class="btn btn-default" id="bt_createBackupTenda" style="width:100%;"><i class="fas fa-cloud-upload-alt"></i> Lancer la sauvegarde</a>
+                <a class="btn btn-default" id="bt_createBackupTenda" style="width:100%;"><i class="fas fa-cloud-upload-alt"></i> {{Lancer la sauvegarde}}</a>
               </div>
             </div>
           </fieldset>

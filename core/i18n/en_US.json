@@ -5,7 +5,7 @@
         "Configuration": "Configuration",
         "Santé": "Health",
         "Mes routeurs Tenda": "My routeurs",
-        "Vous n'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer": "You have no router yet, click Add a device to start",
+        "Vous n\\'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer": "You have no router yet, click Add a device to start",
         "Sauvegarder": "Save",
         "Supprimer": "Delete",
         "Configuration avancée": "Advanced configuration",
@@ -29,6 +29,13 @@
         "Toutes les 15 minutes": "Every 15 minutes",
         "Toutes les 30 minutes": "Every 30 minutes",
         "Toutes les heures": "Every hours",
+        "Sauvegardes": "Backups",
+        "Sauvegardes disponibles": "Available backups",
+        "Aucune": "None",
+        "Supprimer la sauvegarde": "Delete the backup",
+        "Restaurer la sauvegarde": "Restaure the backup",
+        "Télécharger la sauvegarde": "Download the backup",
+        "Lancer la sauvegarde": "Launch the backup",
         "Nom": "Name",
         "Sous-Type": "Subtype",
         "Valeur": "Value",
@@ -44,7 +51,7 @@
         "Historiser": "Historize",
         "Afficher": "Display",
         "Tester": "Test",
-        "Accéder à l'interface du routeur": "Access router interface",
+        "Accéder à l\\'interface du routeur": "Access router interface",
         "Santé Tenda AC": "Health Tenda AC",
         "Télécharger la sauvegarde": "Download the backup",
         "Suppression en cours": "Deleting",
@@ -55,9 +62,9 @@
     "plugins\/tendaac\/core\/class\/tendaac.class.php": {
         "Le routeur Tenda ne repond pas ou le compte est incorrect.": "The Tenda access point is not responding or the credentials are incorrect.",
         "Le routeur Tenda ne repond pas.": "Tenda router does not responds.",
-        "Equipement desactivé impossible d\éxecuter la commande": "Can not execute command while the device is deactivated"
+        "Equipement desactivé impossible d\\'éxecuter la commande": "Can not execute command while the device is deactivated"
     },
-    "plugins\/tendaac\/desktop\/js\/tendaac.js": {
+    "plugins\/tendaac\/desktop\/modal\/health.js": {
         "Module": "Module",
         "ID": "ID",
         "IP": "IP",
