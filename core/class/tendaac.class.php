@@ -107,8 +107,8 @@ class tendaac extends eqLogic {
 				}
 				else {
 						if ( $reboot->getDisplay('generic_type') == "" ) {
-								$reboot->setDisplay('generic_type','GENERIC_ACTION');
-								$reboot->save();
+							$reboot->setDisplay('generic_type','GENERIC_ACTION');
+							$reboot->save();
 						}
 				}
 				$backup = $this->getCmd(null, 'backup');
@@ -186,6 +186,27 @@ class tendaac extends eqLogic {
 							$cmd->save();
 						}
 				}
+				$cmd = $this->getCmd(null, 'upspeed');
+				if ( is_object($cmd) ) {
+						if ( $cmd->getDisplay('generic_type') == "" ) {
+							$cmd->setDisplay('generic_type','GENERIC_INFO');
+							$cmd->save();
+						}
+				}
+				$cmd = $this->getCmd(null, 'downspeed');
+				if ( is_object($cmd) ) {
+						if ( $cmd->getDisplay('generic_type') == "" ) {
+							$cmd->setDisplay('generic_type','GENERIC_INFO');
+							$cmd->save();
+						}
+				}
+				$cmd = $this->getCmd(null, 'wantime');
+				if ( is_object($cmd) ) {
+						if ( $cmd->getDisplay('generic_type') == "" ) {
+							$cmd->setDisplay('generic_type','GENERIC_INFO');
+							$cmd->save();
+						}
+				}
 				if ( $this->getIsEnable() ) {
 					$info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
 					if (stripos($info, 'internetStatus') !== FALSE) {
@@ -203,12 +224,12 @@ class tendaac extends eqLogic {
 			$authurl = $this->getUrl(). 'login/Auth';
 			$parseurl = $this->getUrl(). $parseurl;
 			if ( $this->getConfiguration('password') == "" ) {
-				log::add('tendaac','debug','#1 Parse SANS mot de passe');
+				log::add('tendaac','debug','Pas de mot de passe => parse html');
 				$html = @file_get_contents($parseurl);
 			}
 			else {
-		log::add('tendaac','debug','#2 Parse AVEC mot de passe');
-		$password = $this->getConfiguration('password');
+				log::add('tendaac','debug','Mot de passe entré => parse curl');
+				$password = $this->getConfiguration('password');
 				$password = base64_encode($password);
 				$postinfo = "password=".$password;
 				$temp_dir = jeedom::getTmpFolder('tendaac');
@@ -225,27 +246,31 @@ class tendaac extends eqLogic {
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
 				curl_exec($ch);
 			if (stripos($parseurl, 'DownloadCfg/RouterCfm.cfg') !== FALSE ) {
+				log::add('tendaac','debug','CURL fichier de config');
 				curl_setopt($ch, CURLOPT_URL, $parseurl);
 				$html = curl_exec($ch);
 				$formatdate = date("Ymd")."-".date("His");
-				file_put_contents('/var/www/html/plugins/tendaac/data/backup/RouterCfm-'.$formatdate.'.cfg', $html);
-				if (file_exists('/var/www/html/plugins/tendaac/data/backup/RouterCfm-'.$formatdate.'.cfg')) {
+				file_put_contents(dirname(__FILE__) . '/../../data/backup/RouterCfm-'.$formatdate.'.cfg', $html);
+				if (file_exists(dirname(__FILE__) . '/../../data/backup/RouterCfm-'.$formatdate.'.cfg')) {
 					log::add('tendaac','debug','Fichier de config créé : RouterCfm-'.$formatdate.'.cfg');
 				} else {
 					log::add('tendaac','debug','/!\ Fichier non créé');
 				}
-						}
-					else {
-			curl_setopt($ch, CURLOPT_URL, $parseurl);
+			} else if (stripos($parseurl, 'goform/getStatus') !== FALSE || (stripos($parseurl, 'goform/getQos') !== FALSE ) {
+				log::add('tendaac','debug','CURL getStatus ou getQos');
+				curl_setopt($ch, CURLOPT_URL, $parseurl);
 				$html = curl_exec($ch);
+				sleep(3); //valeurs nulles sans tempo
+              	$html = curl_exec($ch);
 				curl_close($ch);
-			}
-				if (stripos($html, 'internetStatus') !== FALSE ) {
-				log::add('tendaac','debug','Parse OK');
 			} else {
-				log::add('tendaac','debug','/!\ Parse NOK');
+				log::add('tendaac','debug','CURL autre');
+				curl_setopt($ch, CURLOPT_URL, $parseurl);
+				$html = curl_exec($ch);
+				curl_close($ch);	
 			}
-				return $html;
+			log::add('tendaac','debug','RESULTAT CURL = '. $html);
+			return $html;
 			}
 		}
 		public function preInsert()
@@ -254,17 +279,17 @@ class tendaac extends eqLogic {
 		}
 		public function postInsert()
 		{
-				$cmd = $this->getCmd(null, 'status');
-				if ( ! is_object($cmd) ) {
-						$cmd = new tendaacCmd();
-						$cmd->setName('Etat');
-						$cmd->setEqLogic_id($this->getId());
-						$cmd->setType('info');
-						$cmd->setSubType('binary');
-						$cmd->setLogicalId('status');
-						$cmd->setIsVisible(1);
-						$cmd->setEventOnly(1);
-						$cmd->save();
+				$status = $this->getCmd(null, 'status');
+				if ( ! is_object($status) ) {
+						$status = new tendaacCmd();
+						$status->setName('Etat');
+						$status->setEqLogic_id($this->getId());
+						$status->setType('info');
+						$status->setSubType('binary');
+						$status->setLogicalId('status');
+						$status->setIsVisible(1);
+						$status->setEventOnly(1);
+						$status->save();
 				}
 				$reboot = $this->getCmd(null, 'reboot');
 				 if ( ! is_object($reboot) ) {
@@ -275,7 +300,7 @@ class tendaac extends eqLogic {
 						$reboot->setSubType('other');
 						$reboot->setLogicalId('reboot');
 						$reboot->setEventOnly(1);
-						$reboot->setIsVisible(0);
+						$reboot->setIsVisible(1);
 						$reboot->setOrder(1);
 						$reboot->setDisplay('generic_type','GENERIC_ACTION');
 						$reboot->save();
@@ -289,7 +314,7 @@ class tendaac extends eqLogic {
 						$backup->setSubType('other');
 						$backup->setLogicalId('backup');
 						$backup->setEventOnly(1);
-						$backup->setIsVisible(0);
+						$backup->setIsVisible(1);
 						$backup->setOrder(2);
 						$backup->setDisplay('generic_type','GENERIC_ACTION');
 						$backup->save();
@@ -394,7 +419,7 @@ class tendaac extends eqLogic {
 				}
 				$connectedlist = $this->getCmd(null, 'connectedlist');
 				if ( ! is_object($connectedlist)) {
-						$connectedlist = new liveboxCmd();
+						$connectedlist = new tendaacCmd();
 						$connectedlist->setName('Liste des hôtes connectés');
 						$connectedlist->setEqLogic_id($this->getId());
 						$connectedlist->setLogicalId('connectedlist');
@@ -404,12 +429,51 @@ class tendaac extends eqLogic {
 						$connectedlist->setDisplay('generic_type','GENERIC_INFO');
 						$connectedlist->setIsHistorized(0);
 						$connectedlist->save();
-					}
+				}
+				$upspeed = $this->getCmd(null, 'upspeed');
+				if ( ! is_object($upspeed)) {
+						$upspeed = new tendaacCmd();
+						$upspeed->setName('Vitesse d\'envoi');
+						$upspeed->setEqLogic_id($this->getId());
+						$upspeed->setLogicalId('upspeed');
+						$upspeed->setUnite('MB/s');
+						$upspeed->setType('info');
+						$upspeed->setSubType('numeric');
+						$upspeed->setDisplay('generic_type','GENERIC_INFO');
+						$upspeed->setIsHistorized(0);
+						$upspeed->save();
+				}
+				$downspeed = $this->getCmd(null, 'downspeed');
+				if ( ! is_object($downspeed)) {
+						$downspeed = new tendaacCmd();
+						$downspeed->setName('Vitesse de réception');
+						$downspeed->setEqLogic_id($this->getId());
+						$downspeed->setLogicalId('downspeed');
+						$downspeed->setUnite('MB/s');
+						$downspeed->setType('info');
+						$downspeed->setSubType('numeric');
+						$downspeed->setDisplay('generic_type','GENERIC_INFO');
+						$downspeed->setIsHistorized(0);
+						$downspeed->save();
+				}
+				$wantime = $this->getCmd(null, 'wantime');
+				if ( ! is_object($wantime)) {
+						$wantime = new tendaacCmd();
+						$wantime->setName('Temps de connexion WAN');
+						$wantime->setEqLogic_id($this->getId());
+						$wantime->setLogicalId('wantime');
+						$wantime->setUnite('');
+						$wantime->setType('info');
+						$wantime->setSubType('string');
+						$wantime->setDisplay('generic_type','GENERIC_INFO');
+						$wantime->setIsHistorized(0);
+						$wantime->save();
+				}
 		}
 
 		public function checkRemoveFile($url) {
-			if (file_exists('/var/www/html/plugins/tendaac/data/backup/'.$url)) {
-				unlink( '/var/www/html/plugins/tendaac/data/backup/'.$url );
+			if (file_exists(dirname(__FILE__) . '/../../data/backup/'.$url)) {
+				unlink( dirname(__FILE__) . '/../../data/backup/'.$url );
 				log::add('tendaac','debug','Fichier de config créé : '.$url);
 				return 1;
 			} else {
@@ -449,10 +513,12 @@ class tendaac extends eqLogic {
 				$routername = $this->getCmd(null, 'routername');
 				$routername->setCollectDate('');
 				$routername->event($arr["deviceStastics"]["routerName"]);
+				log::add('tendaac','debug','Valeur extraite de $routername : '. $arr["deviceStastics"]["routerName"]);
 
 				$softversion = $this->getCmd(null, 'softversion');
 				$softversion->setCollectDate('');
 				$softversion->event($arr["systemInfo"]["softVersion"]);
+				log::add('tendaac','debug','Valeur extraite de $softversion : '. $arr["systemInfo"]["softVersion"]);
 
 				$wifien = $this->getCmd(null, 'wifien');
 				if ( $arr["wifiBasicCfg"]["wifiEn"] == "true" ) {
@@ -462,6 +528,7 @@ class tendaac extends eqLogic {
 					$wifien->setCollectDate('');
 					$wifien->event(0);
 				}
+				log::add('tendaac','debug','Valeur extraite de $wifien : '. $arr["wifiBasicCfg"]["wifiEn"]);
 
 				$wifien5g = $this->getCmd(null, 'wifien5g');
 				if ( $arr["wifiBasicCfg"]["wifiEn_5G"] == "true" ) {
@@ -471,53 +538,80 @@ class tendaac extends eqLogic {
 					$wifien5g->setCollectDate('');
 					$wifien5g->event(0);
 				}
+				log::add('tendaac','debug','Valeur extraite de $wifien5g : '. $arr["wifiBasicCfg"]["wifiEn_5G"]);
 
 				$wifissid = $this->getCmd(null, 'wifissid');
 				$wifissid->setCollectDate('');
 				$wifissid->event($arr["wifiBasicCfg"]["wifiSSID"]);
+				log::add('tendaac','debug','Valeur extraite de $wifissid : '. $arr["wifiBasicCfg"]["wifiSSID"]);
 
 				$wifissid5g = $this->getCmd(null, 'wifissid5g');
 				$wifissid5g->setCollectDate('');
 				$wifissid5g->event($arr["wifiBasicCfg"]["wifiSSID_5G"]);
+				log::add('tendaac','debug','Valeur extraite de $wifissid5g : '. $arr["wifiBasicCfg"]["wifiSSID_5G"]);
 
 				$wifistatus = $this->getCmd(null, 'wifistatus');
-				if ( $wifistatus->execCmd() != $wifistatus->formatValue($regs[1]) ) {
+				if ($arr["wifiBasicCfg"]["wifiEn"] == 'true' || $arr["wifiBasicCfg"]["wifiEn_5G"] == 'true') {
 					$wifistatus->setCollectDate('');
-					$wifistatus->event($regs[1]);
+					$wifistatus->event(1);
+                } else {
+					$wifistatus->setCollectDate('');
+					$wifistatus->event(0);
 				}
-				$arr = json_decode($connected, true);
+
+				$downspeed = $this->getCmd(null, 'downspeed');
+				$arr["deviceStastics"]["statusDownSpeed"] = round($arr["deviceStastics"]["statusDownSpeed"]/1024,2);
+				$downspeed->setCollectDate('');
+				$downspeed->event($arr["deviceStastics"]["statusDownSpeed"]);
+				log::add('tendaac','debug','Valeur extraite de $downspeed : '. $arr["deviceStastics"]["statusDownSpeed"]);
+
+				$upspeed = $this->getCmd(null, 'upspeed');
+				$arr["deviceStastics"]["statusUpSpeed"] = round($arr["deviceStastics"]["statusUpSpeed"]/1024,2);
+				$upspeed->setCollectDate('');
+				$upspeed->event($arr["deviceStastics"]["statusUpSpeed"]);
+				log::add('tendaac','debug','Valeur extraite de $upspeed : '. $arr["deviceStastics"]["statusUpSpeed"]);
+
+			function transforme($time) {
+				if ($time>=86400) {
+					$jour = floor($time/86400);
+					$reste = $time%86400;
+					$heure = floor($reste/3600);
+					$reste = $reste%3600;
+					$minute = floor($reste/60);
+					$seconde = $reste%60;
+					$result = $jour.'j '.$heure.'h '.$minute.'min '.$seconde.'s';
+				}
+				elseif ($time < 86400 AND $time>=3600) {
+					$heure = floor($time/3600);
+					$reste = $time%3600;
+					$minute = floor($reste/60);
+					$seconde = $reste%60;
+					$result = $heure.'h '.$minute.'min '.$seconde.' s';
+				}
+				elseif ($time<3600 AND $time>=60) {
+					$minute = floor($time/60);
+					$seconde = $time%60;
+					$result = $minute.'min '.$seconde.'s';
+				}
+				elseif ($time < 60) {
+					$result = $time.'s';
+				}
+				return $result;
+			}
+
+				$wantime = $this->getCmd(null, 'wantime');
+				if ($arr["systemInfo"]["wanConnectTime"] != '') {
+					$formatwantime = transforme($arr["systemInfo"]["wanConnectTime"]);
+					$wantime->setCollectDate('');
+					$wantime->event($formatwantime);
+                }
+				log::add('tendaac','debug','Valeur extraite de $wantime : '. $arr["systemInfo"]["wanConnectTime"]);
+
+              	$arr = json_decode($connected, true);
 				$tabstyle = "<style> th, td { padding : 2px !important; color: #C7C6C6; } </style><style> th { text-align:center; } </style><style> td { text-align:left; } </style>";
 				$ConnectedListTable =	 "$tabstyle<table border=1>";
 				$ConnectedListTable .=  "<tr><th>Nom d'hôte</th><th>@IP</th><th>@MAC</th><th>Durée</th></tr>";
 
-           function transforme($time) {
-			if ($time>=86400) {
-				$jour = floor($time/86400);
-				$reste = $time%86400;
-				$heure = floor($reste/3600);
-				$reste = $reste%3600;
-				$minute = floor($reste/60);
-				$seconde = $reste%60;
-				$result = $jour.'j '.$heure.'h '.$minute.'min '.$seconde.'s';
-			}
-			elseif ($time < 86400 AND $time>=3600) {
-				$heure = floor($time/3600);
-				$reste = $time%3600;
-				$minute = floor($reste/60);
-				$seconde = $reste%60;
-				$result = $heure.'h '.$minute.'min '.$seconde.' s';
-			}
-			elseif ($time<3600 AND $time>=60) {
-				$minute = floor($time/60);
-				$seconde = $time%60;
-				$result = $minute.'min '.$seconde.'s';
-			}
-			elseif ($time < 60) {
-				$result = $time.'s';
-			}
-			return $result;
-		}
-				//print_r(count($arr["onlineList"]));  //nombre de PC connectés
 				$Hostname = array();
 				for($i = 0;$i < count($arr["onlineList"]); $i++){
 					$Hostname[$i] = $arr["onlineList"][$i]["qosListHostname"];
@@ -529,30 +623,13 @@ class tendaac extends eqLogic {
 					$ConnectedListTable .=  "<tr><td>".$Hostname[$i]."</td><td>".$IPAddress[$i]."</td><td>".$MACAddress[$i]."</td><td>".$Timest[$i]."</td></tr>";
 				}
 				$ConnectedListTable .=  "</table>";
-
-				log::add('tendaac','debug','Hôtes connectés '.$ConnectedListTable);
-$this->checkAndUpdateCmd('connectedlist', $ConnectedListTable);
+				$this->checkAndUpdateCmd('connectedlist', $ConnectedListTable);
 			}
 		}
 
-		/*     * **********************Getteur Setteur*************************** */
 }
 class tendaacCmd extends cmd
 {
-		/*     * *************************Attributs****************************** */
-		/*     * ***********************Methode static*************************** */
-		/*     * *********************Methode d'instance************************* */
-		public function formatValue($_value, $_quote = false) {
-				if ($this->getLogicalId() == 'wifistatus') {
-						if ( $_value == O ) {
-								return 0;
-						} else {
-								return 1;
-						}
-				}
-				return $_value;
-		}
-		/*     * **********************Getteur Setteur*************************** */
 		public function execute($_options = null) {
 			$eqLogic = $this->getEqLogic();
 			if (!is_object($eqLogic) || $eqLogic->getIsEnable() != 1) {
