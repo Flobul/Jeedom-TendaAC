@@ -17,8 +17,6 @@
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class tendaac extends eqLogic {
-		/*     * *************************Attributs****************************** */
-		/*     * ***********************Methode static*************************** */
 		public static function pull() {
 			foreach (self::byType('tendaac') as $eqLogic) {
 				$eqLogic->scan();
@@ -267,11 +265,10 @@ class tendaac extends eqLogic {
 				log::add('tendaac','debug','CURL autre');
 				curl_setopt($ch, CURLOPT_URL, $parseurl);
 				$html = curl_exec($ch);
-				curl_close($ch);	
+				curl_close($ch);
 			}
 			log::add('tendaac','debug','RESULTAT CURL = '. $html);
 			return $html;
-			}
 		}
 		public function preInsert()
 		{
@@ -626,7 +623,6 @@ class tendaac extends eqLogic {
 				$this->checkAndUpdateCmd('connectedlist', $ConnectedListTable);
 			}
 		}
-
 }
 class tendaacCmd extends cmd
 {
