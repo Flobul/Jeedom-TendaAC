@@ -16,12 +16,11 @@ function addCmdToTable(_cmd) {
         tr += '<span class="cmdAttr" data-l1key="id"></span>';
         tr += '</td>';
         tr += '<td>';
-        tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 140px;" placeholder="{{Nom}}"></td>';
-        tr += '<td class="expertModeVisible">';
-        tr += '<input class="cmdAttr form-control type input-sm" data-l1key="type" value="action" disabled style="margin-bottom : 5px;" />';
-        tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
+        tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 200px;" placeholder="{{Nom}}"></td>';
+        tr += '<td>';
+        tr += '<input class="cmdAttr form-control type input-sm" data-l1key="type" value="info" disabled style="margin-bottom : 5px;" />';
+		tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
         tr += '</td>';
-
         tr += '<td>';
         tr += '<input class="cmdAttr" id="'+ _cmd.id +'value" style="width : 200px; font-style: italic;" readonly="true" value="">';
         $('#'+_cmd.id +'value').val("loading");
@@ -33,24 +32,14 @@ function addCmdToTable(_cmd) {
                 $('#'+_cmd.id +'value').val(result);
             }
           });
-        tr += '</td>';
-
-        tr += '<td>';
-        if (init(_cmd.logicalId) == 'nbimpulsionminute') {
-            tr += '<textarea class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="calcul" style="height : 33px;" placeholder="{{Calcul}}"></textarea> (utiliser #brut# dans la formule)';
-        }
-
-        tr += '</td>';
-        tr += '<td>';
-        tr += '<input type=hidden class="cmdAttr form-control input-sm" data-l1key="unite" value="">';
-        tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width : 50%;display : none;"> ';
-        tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="maxValue" placeholder="{{Max}}" title="{{Max}}" style="width : 50%;display : none;">';
+        tr += '</td><td>';
+        tr += '</td><td>';
         tr += '<span><input type="checkbox" class="cmdAttr" data-l1key="isHistorized"/> {{Historiser}}<br/></span>';
         tr += '<span><input type="checkbox" class="cmdAttr" data-l1key="isVisible" checked/> {{Afficher}}<br/></span>';
         tr += '</td>';
         tr += '<td>';
         if (is_numeric(_cmd.id)) {
-            tr += '<a class="btn btn-default btn-xs cmdAction expertModeVisible" data-action="configure"><i class="fa fa-cogs"></i></a> ';
+            tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
         }
         tr += '</td>';
         table_cmd = '#table_cmd';
@@ -71,19 +60,15 @@ function addCmdToTable(_cmd) {
         tr += '<td>';
         tr += '<input class="cmdAttr form-control type input-sm" data-l1key="type" value="action" disabled style="margin-bottom : 5px;" />';
         tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
-        tr += '<input class="cmdAttr" data-l1key="configuration" data-l2key="virtualAction" value="1" style="display:none;" >';
         tr += '</td>';
-        tr += '<td>';
-        tr += '</td>';
+        tr += '<td></td>';
         tr += '<td></td>';
         tr += '<td>';
         tr += '<span><input type="checkbox" class="cmdAttr" data-l1key="isVisible" checked/> {{Afficher}}<br/></span>';
-        tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width : 50%;display : none;">';
-        tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="maxValue" placeholder="{{Max}}" title="{{Max}}" style="width : 50%;display : none;">';
         tr += '</td>';
         tr += '<td>';
         if (is_numeric(_cmd.id)) {
-            tr += '<a class="btn btn-default btn-xs cmdAction expertModeVisible" data-action="configure"><i class="fa fa-cogs"></i></a> ';
+            tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
             tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
         }
         tr += '</td>';
@@ -144,7 +129,7 @@ $('#bt_createBackupTenda').off().on('click', function () {
              		},
              		success: function (data) {
              			$('#div_alert').showAlert({message: 'Backup effectué avec succès !', level: 'success'});
-                       // fonction pour mettre à jour la liste
+                         updateListBackup();
              		}
              	});
              }
@@ -167,7 +152,7 @@ function checkRemoveFile(url) {
 		},
 		success: function (data) {
 			$('#div_alert').showAlert({message: 'Fichier de configuration supprimé avec succès !', level: 'success'});
-          // fonction pour mettre à jour la liste
+          	updateListBackup();
 		}
 	});
 }
@@ -185,3 +170,31 @@ $('#bt_removeBackupTenda').on('click', function() {
     });
   }
 });
+
+ function updateListBackup() {
+	$.ajax({
+		type: "POST",
+		url: "plugins/tendaac/core/ajax/tendaac.ajax.php",
+		data: {
+			action: "listBackup",
+		},
+		dataType: 'json',
+		global: false,
+		error: function (request, status, error) {
+			handleAjaxError(request, status, error);
+		},
+		success: function (backups) {
+			var options = '';
+			for (i in backups) {
+				var toto = backups[i].split(",");
+				options = '<option value="">{{Aucune}}</option>';
+				for (j in toto) {
+				options += '<option value="/var/www/html/plugins/tendaac/data/backup/' + toto[j] + '">' + toto[j] + '</option>';
+				}
+			}
+			$('#sel_restoreBackupTenda').html(options);
+		}
+	});
+}
+
+updateListBackup();
