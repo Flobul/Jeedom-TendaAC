@@ -254,7 +254,7 @@ class tendaac extends eqLogic {
 				} else {
 					log::add('tendaac','debug','/!\ Fichier non créé');
 				}
-			} else if (stripos($parseurl, 'goform/getStatus') !== FALSE || (stripos($parseurl, 'goform/getQos') !== FALSE ) {
+			} else if (stripos($parseurl, 'goform/getStatus') !== FALSE || (stripos($parseurl, 'goform/getQos') !== FALSE )) {
 				log::add('tendaac','debug','CURL getStatus ou getQos');
 				curl_setopt($ch, CURLOPT_URL, $parseurl);
 				$html = curl_exec($ch);
@@ -269,6 +269,7 @@ class tendaac extends eqLogic {
 			}
 			log::add('tendaac','debug','RESULTAT CURL = '. $html);
 			return $html;
+			}
 		}
 		public function preInsert()
 		{
