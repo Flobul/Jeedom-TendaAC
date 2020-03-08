@@ -47,6 +47,16 @@ try {
 		}
 		ajax::success($return);
 	}
+	if (init('action') == 'listBackup') {
+		$path = '/var/www/html/';
+		$directory = 'plugins/tendaac/data/backup/';
+		$scanned_directory = preg_grep('~\.(cfg)$~',(scandir($path.$directory)));
+		foreach ($scanned_directory as $key => $info) {
+          $options .= $info.',';
+		}
+		$options = substr($options,0,strlen($options)-1);
+      	ajax::success($options);
+    }
 
   throw new Exception('Aucune methode correspondante');
 	/*     * *********Catch exeption*************** */

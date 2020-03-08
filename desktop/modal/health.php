@@ -29,6 +29,9 @@ $eqLogics = tendaac::byType('tendaac');
 			<th>{{IP}}</th>
 			<th>{{Statut}}</th>
 			<th>{{WiFi}}</th>
+			<th><i class="fas fa-arrow-down"> {{Vitesse réception}}</th>
+			<th><i class="fas fa-arrow-up"> {{Vitesse émission}}</th>
+			<th>{{Temps de connexion WAN}}</th>
 			<th>{{Dernière communication}}</th>
 			<th>{{Date de création}}</th>
 		</tr>
@@ -52,8 +55,25 @@ foreach ($eqLogics as $eqLogic) {
 	} else {
 		$wifi = '<span class="label label-danger" style="font-size : 1em;" title="{{Absent}}"><i class="fa fa-times"></i></span>';
 	}
-	echo '<td>' . $wifi . '</td>';
 	echo '<td>' . $status . '</td>';
+	echo '<td>' . $wifi . '</td>';
+
+	$downspeed = $eqLogic->getCmd('info', 'downspeed');
+	if (is_object($downspeed)) {
+		$downspeedvalue = $downspeed->execCmd();
+	}
+	$upspeed = $eqLogic->getCmd('info', 'upspeed');
+	if (is_object($upspeed)) {
+		$upspeedvalue = $upspeed->execCmd();
+	}
+	$wantime = $eqLogic->getCmd('info', 'wantime');
+  	if (is_object($wantime)) {
+		$wantimevalue = $wantime->execCmd();
+	}
+	echo '<td></i><span class="label label-info" style="font-size : 1em; cursor : default;">' . $downspeedvalue . ' MB/s</span></td>';
+	echo '<td></i><span class="label label-info" style="font-size : 1em; cursor : default;">' . $upspeedvalue . ' MB/s</span></td>';
+	echo '<td></i><span class="label label-info" style="font-size : 1em; cursor : default;">' . $wantimevalue . '</span></td>';
+
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getStatus('lastCommunication') . '</span></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getConfiguration('createtime') . '</span></td></tr>';
 }
