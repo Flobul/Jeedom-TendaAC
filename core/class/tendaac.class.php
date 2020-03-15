@@ -254,12 +254,37 @@ class tendaac extends eqLogic {
 				} else {
 					log::add('tendaac','debug','/!\ Fichier non créé');
 				}
-			} else if (stripos($parseurl, 'goform/getStatus') !== FALSE || (stripos($parseurl, 'goform/getQos') !== FALSE )) {
-				log::add('tendaac','debug','CURL getStatus ou getQos');
+			} else if (stripos($parseurl, 'goform/getStatus') !== FALSE) {
+				log::add('tendaac','debug','CURL getStatus');
 				curl_setopt($ch, CURLOPT_URL, $parseurl);
 				$html = curl_exec($ch);
 				sleep(3); //valeurs nulles sans tempo
               	$html = curl_exec($ch);
+				curl_close($ch);
+			} else if (stripos($parseurl, 'goform/getQos') !== FALSE) {
+				log::add('tendaac','debug','CURL getQos');
+				curl_setopt($ch, CURLOPT_URL, $parseurl);
+				$html = curl_exec($ch);
+              	log::add('tendaac','debug','TEST onlineList CURL = '. strlen($html));
+				if (strlen($html) < 20) {
+
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_HEADER, false);
+				curl_setopt($ch, CURLOPT_NOBODY, false);
+				curl_setopt($ch, CURLOPT_URL, $authurl);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+				curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
+				curl_exec($ch);
+
+
+                  curl_setopt($ch, CURLOPT_URL, $parseurl);
+				$html = curl_exec($ch);
+              	log::add('tendaac','debug','TEST onlineList CURL cookie = '. strlen($html));
+                }
 				curl_close($ch);
 			} else {
 				log::add('tendaac','debug','CURL autre');
@@ -494,6 +519,9 @@ class tendaac extends eqLogic {
 				$url = $this->getUrl();
 				$info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
 				$connected = $this->cookieurl('goform/getQos?random=0.46529553086082265&modules=onlineList');
+				$wifi = $this->cookieurl('goform/getWifi?random=0.46529553086082265&modules=wifiTime%2CwifiPower');
+
+				$tableau = json_decode($test, true);
 
 				if ( $info === false ) {
 					throw new Exception(__('Le routeur Tenda ne repond pas.',__FILE__));
@@ -608,17 +636,56 @@ class tendaac extends eqLogic {
               	$arr = json_decode($connected, true);
 				$tabstyle = "<style> th, td { padding : 2px !important; color: #C7C6C6; } </style><style> th { text-align:center; } </style><style> td { text-align:left; } </style>";
 				$ConnectedListTable =	 "$tabstyle<table border=1>";
-				$ConnectedListTable .=  "<tr><th>Nom d'hôte</th><th>@IP</th><th>@MAC</th><th>Durée</th></tr>";
+				//$ConnectedListTable .=  "<tr><th>Nom d'hôte</th><th>Connectivité</th><th>Download</th><th>Upload</th><th>@IP</th><th>@MAC</th><th>Durée</th></tr>"; //suppression @MAC
+				$ConnectedListTable .=  "<tr><th>Nom d'hôte</th><th>@IP</th><th>Connectivité</th><th>Download</th><th>Upload</th><th>Durée</th></tr>";
 
 				$Hostname = array();
 				for($i = 0;$i < count($arr["onlineList"]); $i++){
-					$Hostname[$i] = $arr["onlineList"][$i]["qosListHostname"];
-					$IPAddress[$i] = $arr["onlineList"][$i]["qosListIP"];
-					$MACAddress[$i] = $arr["onlineList"][$i]["qosListMac"];
-					$Timest[$i] = $arr["onlineList"][$i]["qoslistConnetTime"];
+					$Hostname[$i] = $arr["onlineList"][$i]["qosListHostname"]; //Unknown
+					$Remark[$i] = $arr["onlineList"][$i]["qosListRemark"]; //ESP Ballon
+					if ($Hostname[$i] == 'Unknown' && (!empty($Remark[$i])))	{
+						$Hostname[$i] = $Remark[$i];
+					}
+					$IPAddress[$i] = $arr["onlineList"][$i]["qosListIP"];  //192.168.0.31
+					$ConnectType[$i] = $arr["onlineList"][$i]["qosListConnectType"]; //wifi ou ou wires
+					if (!isset($arr["onlineList"][$i]["qosListAccessType"])) {
+						$AccessType[$i] = ' ';
+					} else {
+						$AccessType[$i] = $arr["onlineList"][$i]["qosListAccessType"]; //wifi_2G ou wifi_5G
+					}
+					if ($ConnectType[$i] == 'wifi') {
+						$ConnectType[$i] = 'WiFi';
+						$AccessType[$i] = $arr["onlineList"][$i]["qosListAccessType"]; //wifi_2G ou wifi_5G
+						if ($AccessType[$i] == 'wifi_2G') {
+							$AccessType[$i] = '2.4 GHz';
+						} else if ($AccessType[$i] == 'wifi_5G') {
+							$AccessType[$i] = '5 GHz';
+						} else {
+							$AccessType[$i] = '1';
+						}
+					} else if ($ConnectType[$i] == 'wires') {
+							$ConnectType[$i] = 'Ethernet';
+					} else {
+						$ConnectType[$i] = '';
+					}
+					//$MACAddress[$i] = $arr["onlineList"][$i]["qosListMac"]; //c8:d8:54:6f:aa:ef
+					$DownSpeed[$i] = $arr["onlineList"][$i]["qosListDownSpeed"]; //1540.00
+					if ($DownSpeed[$i] > 1024) {
+						$DownSpeed[$i] = round($DownSpeed[$i]/1024,2).' MB/s';
+					} else {
+						$DownSpeed[$i] = $DownSpeed[$i].' KB/s';
+					}
+					$UpSpeed[$i] = $arr["onlineList"][$i]["qosListUpSpeed"]; //351.00
+					if ($UpSpeed[$i] > 1024) {
+						$UpSpeed[$i] = round($UpSpeed[$i]/1024,2).' MB/s';
+					} else {
+						$UpSpeed[$i] = $UpSpeed[$i].' KB/s';
+					}
+					$Timest[$i] = $arr["onlineList"][$i]["qoslistConnetTime"]; //8085
 					$Timest[$i] = transforme($Timest[$i]);
 
-					$ConnectedListTable .=  "<tr><td>".$Hostname[$i]."</td><td>".$IPAddress[$i]."</td><td>".$MACAddress[$i]."</td><td>".$Timest[$i]."</td></tr>";
+					//$ConnectedListTable .=  "<tr><td>".$Hostname[$i]."</td><td>".$ConnectType[$i]." ".$AccessType[$i]."</td><td>".$DownSpeed[$i]."</td><td>".$UpSpeed[$i]."</td><td>".$IPAddress[$i]."</td><td>".$MACAddress[$i]."</td><td>".$Timest[$i]."</td></tr>"; //suppression @MAC
+					$ConnectedListTable .=  "<tr><td>".$Hostname[$i]."</td><td>".$IPAddress[$i]."</td><td>".$ConnectType[$i]." ".$AccessType[$i]."</td><td>".$DownSpeed[$i]."</td><td>".$UpSpeed[$i]."</td><td>".$Timest[$i]."</td></tr>";
 				}
 				$ConnectedListTable .=  "</table>";
 				$this->checkAndUpdateCmd('connectedlist', $ConnectedListTable);
