@@ -18,17 +18,28 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class tendaac extends eqLogic {
 		public static function pull() {
-			foreach (self::byType('tendaac') as $eqLogic) {
-				$eqLogic->scan();
-				log::add('tendaac','debug','Scan CRON auto');
+			foreach (eqLogic::byType('tendaac') as $eqTendaac) {
+				if($eqTendaac->getIsEnable()){
+					if ($eqTendaac->getConfiguration('type') == "box") {
+						$eqTendaac->scan();
+						log::add('tendaac','debug','Lancement scan CRON auto');
+						$status = $eqTendaac->getCmd(null, 'status');
+					} else $status = $eqTendaac->getCmd(null, 'present');
+					if ($status->execCmd() == '1') {
+						$eqTendaac->setCache('lastupdate',date("d-m-Y H:i:s"));
+					}
+					log::add('tendaac','debug','DEBUGGG' . $eqTendaac->getCache('lastupdate','0'));
+				}
 			}
 		}
 		public static function cron() {
 			foreach(eqLogic::byType('tendaac') as $eqTendaac){
 				if($eqTendaac->getIsEnable()){
-					if ($eqTendaac->getConfiguration('RepeatCmd') == "cron") {
-						$eqTendaac->scan();
-						log::add('tendaac','debug','Scan CRON selectionné');
+					if ($eqTendaac->getConfiguration('type') == "box") {
+						if ($eqTendaac->getConfiguration('RepeatCmd') == "cron") {
+							$eqTendaac->scan();
+							log::add('tendaac','debug','Lancement scan CRON');
+						}
 					}
 				}
 			}
@@ -36,9 +47,11 @@ class tendaac extends eqLogic {
 		public static function cron5() {
 			foreach(eqLogic::byType('tendaac') as $eqTendaac){
 				if($eqTendaac->getIsEnable()){
-					if ($eqTendaac->getConfiguration('RepeatCmd') == "cron5") {
-						$eqTendaac->scan();
-						log::add('tendaac','debug','Scan CRON5 selectionné');
+					if ($eqTendaac->getConfiguration('type') == "box") {
+						if ($eqTendaac->getConfiguration('RepeatCmd') == "cron5") {
+							$eqTendaac->scan();
+							log::add('tendaac','debug','Lancement scan CRON5');
+						}
 					}
 				}
 			}
@@ -46,9 +59,11 @@ class tendaac extends eqLogic {
 		public static function cron10() {
 			foreach(eqLogic::byType('tendaac') as $eqTendaac){
 				if($eqTendaac->getIsEnable()){
-					if ($eqTendaac->getConfiguration('RepeatCmd') == "cron10") {
-						$eqTendaac->scan();
-						log::add('tendaac','debug','Scan CRON10 selectionné');
+					if ($eqTendaac->getConfiguration('type') == "box") {
+						if ($eqTendaac->getConfiguration('RepeatCmd') == "cron10") {
+							$eqTendaac->scan();
+							log::add('tendaac','debug','Lancement scan CRON10');
+						}
 					}
 				}
 			}
@@ -56,9 +71,11 @@ class tendaac extends eqLogic {
 		public static function cron15() {
 			foreach(eqLogic::byType('tendaac') as $eqTendaac){
 				if($eqTendaac->getIsEnable()){
-					if ($eqTendaac->getConfiguration('RepeatCmd') == "cron15") {
-						$eqTendaac->scan();
-						log::add('tendaac','debug','Scan CRON15 selectionné');
+					if ($eqTendaac->getConfiguration('type') == "box") {
+						if ($eqTendaac->getConfiguration('RepeatCmd') == "cron15") {
+							$eqTendaac->scan();
+							log::add('tendaac','debug','Lancement scan CRON15');
+						}
 					}
 				}
 			}
@@ -66,9 +83,11 @@ class tendaac extends eqLogic {
 		public static function cron30() {
 			foreach(eqLogic::byType('tendaac') as $eqTendaac){
 				if($eqTendaac->getIsEnable()){
-					if ($eqTendaac->getConfiguration('RepeatCmd') == "cron30") {
-						$eqTendaac->scan();
-						log::add('tendaac','debug','Scan CRON30 selectionné');
+					if ($eqTendaac->getConfiguration('type') == "box") {
+						if ($eqTendaac->getConfiguration('RepeatCmd') == "cron30") {
+							$eqTendaac->scan();
+							log::add('tendaac','debug','Lancement scan CRON30');
+						}
 					}
 				}
 			}
@@ -76,38 +95,190 @@ class tendaac extends eqLogic {
 		public static function cronHourly() {
 			foreach(eqLogic::byType('tendaac') as $eqTendaac){
 				if($eqTendaac->getIsEnable()){
-					if ($eqTendaac->getConfiguration('RepeatCmd') == "cronHourly") {
-						$eqTendaac->scan();
-						log::add('tendaac','debug','Scan CRONHourly selectionné');
+					if ($eqTendaac->getConfiguration('type') == "box") {
+						if ($eqTendaac->getConfiguration('RepeatCmd') == "cronHourly") {
+							$eqTendaac->scan();
+							log::add('tendaac','debug','Lancement scan CRONHourly');
+						}
 					}
 				}
 			}
 		}
 
+	public static function deleteDisabledEQ($what = 'clients') {
+		log::add('tendaac', 'info', "deleteDisabledEQ");
+		$ignoredNew=[];
+		if($what == 'all' || $what == 'clients') {
+			$eqLogics = eqLogic::byType('tendaac');
+			foreach ($eqLogics as $eqLogic) {
+				if($eqLogic->getConfiguration('type','') != 'cli') continue;
+					if($what == 'clients' ) {
+						if ($eqLogic->getIsEnable() != 1) {
+							$ignoredNew[]=$eqLogic->getLogicalId();
+							$eqLogic->remove();
+						}
+					} elseif ($what == 'all' ) {
+						$ignoredNew[]=$eqLogic->getLogicalId();
+						$eqLogic->remove();
+					}
+			}
+			if(count($ignoredNew)) {
+				log::add('tendaac', 'debug', "ignoredNew :".json_encode($ignoredNew));
+				$ignoredBefore=config::byKey('ignoredClients','tendaac',[],true);
+				if($ignoredBefore==null) $ignoredBefore=[];
+				log::add('tendaac', 'debug', "ignoredBefore :".json_encode($ignoredBefore));
+				$ignoredClients = array_unique(array_merge($ignoredBefore,$ignoredNew),SORT_REGULAR);
+				log::add('tendaac', 'debug', "ignoredClients :".json_encode($ignoredClients));
+				config::save('ignoredClients',$ignoredClients,'tendaac');
+			}
+		}
+	}
+
+	public static function syncTendaac($what='all') {
+		log::add('tendaac', 'info', "syncTendaac");
+			function transforme($time) {
+				if ($time>=86400) {
+					$jour = floor($time/86400);
+					$reste = $time%86400;
+					$heure = floor($reste/3600);
+					$reste = $reste%3600;
+					$minute = floor($reste/60);
+					$seconde = $reste%60;
+					$result = $jour.'j '.$heure.'h '.$minute.'min '.$seconde.'s';
+				}
+				elseif ($time < 86400 AND $time>=3600) {
+					$heure = floor($time/3600);
+					$reste = $time%3600;
+					$minute = floor($reste/60);
+					$seconde = $reste%60;
+					$result = $heure.'h '.$minute.'min '.$seconde.' s';
+				}
+				elseif ($time<3600 AND $time>=60) {
+					$minute = floor($time/60);
+					$seconde = $time%60;
+					$result = $minute.'min '.$seconde.'s';
+				}
+				elseif ($time < 60) {
+					$result = $time.'s';
+				}
+				return $result;
+			}
+		if($what == 'all' || $what == 'clients') {
+			$eqLogics = eqLogic::byType('tendaac');
+			foreach ($eqLogics as $eqLogic) {
+				if($eqLogic->getConfiguration('type','') != 'box' || $eqLogic->getIsEnable() != 1) {
+					continue;
+				}
+				$connected = $eqLogic->cookieurl('goform/getQos?random=0.46529553086082265&modules=onlineList');
+				if (isset($connected)) {
+              		$content = json_decode($connected, true);
+					if (isset($content["onlineList"])) {
+						for($i = 0;$i < count($content["onlineList"]); $i++){
+							$Hostname[$i] = $content["onlineList"][$i]["qosListHostname"]; //Unknown
+							$Remark[$i] = $content["onlineList"][$i]["qosListRemark"]; //ESP Ballon
+							if ($Hostname[$i] == 'Unknown' && (!empty($Remark[$i])))	{
+								$Hostname[$i] = $Remark[$i];
+							}
+							$IPAddress[$i] = $content["onlineList"][$i]["qosListIP"];  //192.168.0.31
+							$ConnectType[$i] = $content["onlineList"][$i]["qosListConnectType"]; //wifi ou ou wires
+							if (!isset($content["onlineList"][$i]["qosListAccessType"])) {
+								$AccessType[$i] = ' ';
+							} else {
+								$AccessType[$i] = $content["onlineList"][$i]["qosListAccessType"]; //wifi_2G ou wifi_5G
+							}
+							if ($ConnectType[$i] == 'wifi') {
+								$ConnectType[$i] = 'WiFi';
+								$AccessType[$i] = $content["onlineList"][$i]["qosListAccessType"]; //wifi_2G ou wifi_5G
+								if ($AccessType[$i] == 'wifi_2G') {
+									$AccessType[$i] = '2.4 GHz';
+								} else if ($AccessType[$i] == 'wifi_5G') {
+									$AccessType[$i] = '5 GHz';
+								} else {
+									$AccessType[$i] = '1';
+								}
+							} else if ($ConnectType[$i] == 'wires') {
+									$ConnectType[$i] = 'Ethernet';
+							} else {
+								$ConnectType[$i] = '';
+							}
+							$MACAddress[$i] = $content["onlineList"][$i]["qosListMac"]; //c8:d8:54:6f:aa:ef
+							$DownSpeed[$i] = $content["onlineList"][$i]["qosListDownSpeed"]; //1540.00
+							$Present[$i] = $content["onlineList"][$i]["qosListAccess"];
+							$Type[$i] = $content["onlineList"][$i]["qosListManufacturer"];
+							$SimpleDownSpeed[$i] = round($DownSpeed[$i]/1024,2);
+							if ($DownSpeed[$i] > 1024) {
+								$DownSpeed[$i] = round($DownSpeed[$i]/1024,2).' MB/s';
+							} else {
+								$DownSpeed[$i] = $DownSpeed[$i].' KB/s';
+							}
+							$UpSpeed[$i] = $content["onlineList"][$i]["qosListUpSpeed"]; //351.00
+							$SimpleUpSpeed[$i] = round($UpSpeed[$i]/1024,2);
+							if ($UpSpeed[$i] > 1024) {
+								$UpSpeed[$i] = round($UpSpeed[$i]/1024,2).' MB/s';
+							} else {
+								$UpSpeed[$i] = $UpSpeed[$i].' KB/s';
+							}
+							$Timest[$i] = $content["onlineList"][$i]["qoslistConnetTime"]; //8085
+							$Timest[$i] = transforme($Timest[$i]);
+
+							$client['Name'] = $Hostname[$i];
+							$client['Key'] = $MACAddress[$i];
+							$client['IPAddress'] = $IPAddress[$i];
+							$client['AccessType'] = $ConnectType[$i];
+							$client['lastlogin'] = $Timest[$i];
+							$client['DownSpeed'] = $SimpleDownSpeed[$i];
+							$client['UpSpeed'] = $SimpleUpSpeed[$i];
+							$client['deviceType'] = $Type[$i];
+							$activeclients[$MACAddress[$i]] = $Present[$i];
+							$ignoredClients=config::byKey('ignoredClients','tendaac',[],true);
+
+							if(!in_array($MACAddress[$i],$ignoredClients)) {
+
+								$lbcli = tendaac::byLogicalId($MACAddress[$i], 'tendaac');
+								if (!is_object($lbcli)) {
+									tendaac::createClient($client, $eqLogic->getId());
+									event::add('jeedom::alert', array(
+										'level' => 'warning',
+										'page' => 'tendaac',
+										'message' => __('Client inclus avec succès : ' .$MACAddress[$i], __FILE__),
+									));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public static function noMoreIgnore($what = 'clients') {
+		config::remove('ignoredClients','tendaac');
+	}
 		public function getUrl() {
 			$url = 'http://';
 			$url .= $this->getConfiguration('ip');
 			return $url."/";
 		}
 		public function preUpdate() {
-			$reboot = $this->getCmd(null, 'reboot');
-			 	if ( ! is_object($reboot) ) {
-						$reboot = new tendaacCmd();
-						$reboot->setName('Reboot');
-						$reboot->setEqLogic_id($this->getId());
-						$reboot->setType('action');
-						$reboot->setSubType('other');
-						$reboot->setLogicalId('reboot');
-						$reboot->setEventOnly(1);
-						$reboot->setIsVisible(0);
-						$reboot->setDisplay('generic_type','GENERIC_ACTION');
-						$reboot->save();
+			if ( $this->getIsEnable() && $this->getConfiguration('type','') == 'box') {
+				$reboot = $this->getCmd(null, 'reboot');
+				if ( ! is_object($reboot) ) {
+					$reboot = new tendaacCmd();
+					$reboot->setName('Reboot');
+					$reboot->setEqLogic_id($this->getId());
+					$reboot->setType('action');
+					$reboot->setSubType('other');
+					$reboot->setLogicalId('reboot');
+					$reboot->setEventOnly(1);
+					$reboot->setIsVisible(0);
+					$reboot->setDisplay('generic_type','GENERIC_ACTION');
+					$reboot->save();
 				}
 				else {
-						if ( $reboot->getDisplay('generic_type') == "" ) {
-							$reboot->setDisplay('generic_type','GENERIC_ACTION');
-							$reboot->save();
-						}
+					if ( $reboot->getDisplay('generic_type') == "" ) {
+						$reboot->setDisplay('generic_type','GENERIC_ACTION');
+						$reboot->save();
+					}
 				}
 				$backup = $this->getCmd(null, 'backup');
 				 if ( ! is_object($backup) ) {
@@ -123,87 +294,87 @@ class tendaac extends eqLogic {
 						$backup->save();
 				}
 				else {
-						if ( $backup->getDisplay('generic_type') == "" ) {
-							$backup->setDisplay('generic_type','GENERIC_ACTION');
-							$backup->save();
-						}
+					if ( $backup->getDisplay('generic_type') == "" ) {
+						$backup->setDisplay('generic_type','GENERIC_ACTION');
+						$backup->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'status');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'wifistatus');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'routername');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'softversion');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'wifien');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'wifien5g');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'wifissid');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'wifissid5g');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'upspeed');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'downspeed');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				$cmd = $this->getCmd(null, 'wantime');
 				if ( is_object($cmd) ) {
-						if ( $cmd->getDisplay('generic_type') == "" ) {
-							$cmd->setDisplay('generic_type','GENERIC_INFO');
-							$cmd->save();
-						}
+					if ( $cmd->getDisplay('generic_type') == "" ) {
+						$cmd->setDisplay('generic_type','GENERIC_INFO');
+						$cmd->save();
+					}
 				}
 				if ( $this->getIsEnable() ) {
 					$info = $this->cookieurl('goform/getStatus?random=0.46529553086082265&modules=internetStatus%2CdeviceStatistics%2CsystemInfo%2CwanAdvCfg%2CwifiRelay%2CwifiBasicCfg%2CsysTime');
@@ -214,8 +385,9 @@ class tendaac extends eqLogic {
 						log::add('tendaac','debug','/!\ Routeur non présent');
 					}
 					if ( $info === false )
-					throw new Exception(__('Le routeur Tenda ne repond pas ou le compte est incorrect.',__FILE__));
+						throw new Exception(__('Le routeur Tenda ne repond pas ou le compte est incorrect.',__FILE__));
 				}
+			}
 		}
 
 		public function cookieurl($parseurl) {
@@ -298,10 +470,11 @@ class tendaac extends eqLogic {
 		}
 		public function preInsert()
 		{
-				$this->setIsVisible(0);
+			$this->setIsVisible(0);
 		}
 		public function postInsert()
 		{
+			if ( $this->getIsEnable() && $this->getConfiguration('type','') == 'box') {
 				$status = $this->getCmd(null, 'status');
 				if ( ! is_object($status) ) {
 						$status = new tendaacCmd();
@@ -492,8 +665,169 @@ class tendaac extends eqLogic {
 						$wantime->setIsHistorized(0);
 						$wantime->save();
 				}
+			} else if ($this->getConfiguration('type','') == 'cli') {
+				$cmd = $this->getCmd(null, 'lastlogin');
+				if ( ! is_object($cmd)) {
+					$cmd = new tendaacCmd();
+					$cmd->setName(__('Durée de connexion', __FILE__));
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->setLogicalId('lastlogin');
+					$cmd->setType('info');
+					$cmd->setSubType('string');
+					$cmd->setGeneric_type( 'GENERIC_INFO');
+					$cmd->setIsVisible(0);
+					$cmd->setIsHistorized(0);
+					$cmd->save();
+				}
+				$cmd = $this->getCmd(null, 'present');
+				if ( ! is_object($cmd)) {
+					$cmd = new tendaacCmd();
+					$cmd->setName(__('Présent', __FILE__));
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->setLogicalId('present');
+					$cmd->setType('info');
+					$cmd->setGeneric_type( 'GENERIC_INFO');
+					$cmd->setSubType('binary');
+					$cmd->setIsVisible(1);
+					$cmd->setIsHistorized(1);
+					$cmd->save();
+				}
+				$cmd = $this->getCmd(null, 'ip');
+				if ( ! is_object($cmd)) {
+					$cmd = new tendaacCmd();
+					$cmd->setName(__('Adresse IP', __FILE__));
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->setLogicalId('ip');
+					$cmd->setType('info');
+					$cmd->setSubType('string');
+					$cmd->setGeneric_type( 'GENERIC_INFO');
+					$cmd->setIsVisible(1);
+					$cmd->setIsHistorized(0);
+					$cmd->save();
+				}
+				$cmd = $this->getCmd(null, 'macaddress');
+				if ( ! is_object($cmd)) {
+					$cmd = new tendaacCmd();
+					$cmd->setName(__('Adresse Mac', __FILE__));
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->setLogicalId('macaddress');
+					$cmd->setType('info');
+					$cmd->setSubType('string');
+					$cmd->setGeneric_type( 'GENERIC_INFO');
+					$cmd->setIsVisible(1);
+					$cmd->setIsHistorized(0);
+					$cmd->save();
+				}
+				$cmd = $this->getCmd(null, 'access');
+				if ( ! is_object($cmd)) {
+					$cmd = new tendaacCmd();
+					$cmd->setName(__('Accès Internet', __FILE__));
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->setLogicalId('access');
+					$cmd->setType('info');
+					$cmd->setSubType('string');
+					$cmd->setGeneric_type( 'SWITCH_STATE');
+					$cmd->setIsVisible(1);
+					$cmd->setIsHistorized(1);
+					$cmd->save();
+				}
+				$cmd = $this->getCmd(null, 'downspeed');
+				if ( ! is_object($cmd)) {
+					$cmd = new tendaacCmd();
+					$cmd->setName(__('Vitesse de réception', __FILE__));
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->setLogicalId('downspeed');
+					$cmd->setType('info');
+					$cmd->setSubType('numeric');
+					$cmd->setUnite('MB/s');
+					$cmd->setGeneric_type( 'SWITCH_STATE');
+					$cmd->setIsVisible(1);
+					$cmd->setIsHistorized(1);
+					$cmd->save();
+				}
+				$cmd = $this->getCmd(null, 'upspeed');
+				if ( ! is_object($cmd)) {
+					$cmd = new tendaacCmd();
+					$cmd->setName(__('Vitesse d\'envoi', __FILE__));
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->setLogicalId('upspeed');
+					$cmd->setType('info');
+					$cmd->setSubType('numeric');
+					$cmd->setUnite('MB/s');
+					$cmd->setGeneric_type( 'SWITCH_STATE');
+					$cmd->setIsVisible(1);
+					$cmd->setIsHistorized(1);
+					$cmd->save();
+				}
+				$cmd = $this->getCmd(null, 'manufacturer');
+				if ( ! is_object($cmd)) {
+					$cmd = new tendaacCmd();
+					$cmd->setName(__('Marque', __FILE__));
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->setLogicalId('manufacturer');
+					$cmd->setType('info');
+					$cmd->setSubType('string');
+					$cmd->setGeneric_type( 'SWITCH_STATE');
+					$cmd->setIsVisible(1);
+					$cmd->setIsHistorized(1);
+					$cmd->save();
+				}
+            }
 		}
+  
+  	public function preRemove() {
+		if ($this->getConfiguration('type') == "box") { // Si c'est un type box il faut supprimer ses clients
+			$eqLogics = eqLogic::byType('tendaac');
+			foreach ($eqLogics as $eqLogic) {
+				if($eqLogic->getConfiguration('type') == 'cli' && $eqLogic->getConfiguration('boxId') == $this->getId()){
+					$eqLogic->remove();
+				}
+			}
+		}
+	}
 
+	public function getImage() {
+		if($this->getConfiguration('type') == 'cli'){
+			$filename = 'plugins/tendaac/core/config/' . $this->getConfiguration('deviceType') .'.png';
+			if(file_exists(__DIR__.'/../../../../'.$filename)){
+				return $filename;
+			}
+		}
+		return 'plugins/tendaac/plugin_info/tendaac_icon.png';
+	}
+
+  	public static function nameExists($name) {
+			$allTenda=eqLogic::byType('tendaac');
+			foreach($allTenda as $u) {
+				if($name == $u->getName()) return true;
+			}
+			return false;
+	}
+  	public static function createClient($client, $boxId) {
+		$eqLogicClient = new tendaac();
+		$mac = $client['Key'];
+		$defaultRoom = intval(config::byKey('defaultParentObject','tendaac','',true));
+		$name= (isset($client["Name"]) && $client["Name"]) ? $client["Name"] : $mac;
+		if(self::nameExists($name)) {
+			log::add('tendaac', 'debug', "Nom en double ".$name." renommé en ".$name.'_'.$mac);
+			$name = $name.'_'.$mac;
+		}
+		log::add('tendaac', 'info', "Trouvé Client ".$name."(".$mac."):".json_encode($client));
+
+		$eqLogicClient->setName($name);
+		$eqLogicClient->setIsEnable(1);
+		$eqLogicClient->setIsVisible(0);
+		$eqLogicClient->setLogicalId($mac);
+		$eqLogicClient->setEqType_name('tendaac');
+		if($defaultRoom) $eqLogicClient->setObject_id($defaultRoom);
+		$eqLogicClient->setConfiguration('type', 'cli');
+		$eqLogicClient->setConfiguration('boxId', $boxId);
+		$eqLogicClient->setConfiguration('macAddress',$mac);
+		$eqLogicClient->setConfiguration('deviceType',$client['deviceType']);
+		$eqLogicClient->setConfiguration('image',$eqLogicClient->getImage());
+		$eqLogicClient->save();
+	}
+  
 		public function checkRemoveFile($url) {
 			if (file_exists(dirname(__FILE__) . '/../../data/backup/'.$url)) {
 				unlink( dirname(__FILE__) . '/../../data/backup/'.$url );
@@ -504,7 +838,37 @@ class tendaac extends eqLogic {
 				return;
 			}
 		}
-
+  
+	function refreshClientInfo($client, $lbcli) {
+		$clicmd = $lbcli->getCmd(null, 'lastlogin');
+		if (is_object($clicmd) && isset($client["lastlogin"]) && $client["lastlogin"] !== '') {
+			$lbcli->checkAndUpdateCmd('lastlogin', $client['lastlogin']);
+		}
+		$clicmd = $lbcli->getCmd(null, 'downspeed');
+		if (is_object($clicmd) && isset($client['DownSpeed']) && $client['DownSpeed'] !== '') {
+			$lbcli->checkAndUpdateCmd('downspeed', $client['DownSpeed']);
+		}
+		$clicmd = $lbcli->getCmd(null, 'upspeed');
+		if (is_object($clicmd) && isset($client["UpSpeed"]) && $client["UpSpeed"] !== '') {
+			$lbcli->checkAndUpdateCmd('upspeed', $client['UpSpeed']);
+		}
+		$clicmd = $lbcli->getCmd(null, 'ip');
+		if (is_object($clicmd) && isset($client["IPAddress"])) {
+			$lbcli->checkAndUpdateCmd('ip', $client['IPAddress']);
+		}
+		$clicmd = $lbcli->getCmd(null, 'macaddress');
+		if (is_object($clicmd) && isset($client['Key'])) {
+			$lbcli->checkAndUpdateCmd('macaddress', $client['Key']);
+		}
+		$clicmd = $lbcli->getCmd(null, 'access');
+		if (is_object($clicmd) && isset($client['AccessType'])) {
+			$lbcli->checkAndUpdateCmd('access', $client['AccessType']);
+		}
+		$clicmd = $lbcli->getCmd(null, 'manufacturer');
+		if (is_object($clicmd) && isset($client['deviceType'])) {
+			$lbcli->checkAndUpdateCmd('manufacturer', $client['deviceType']);
+		}
+	}
 		public function event() {
 			foreach (eqLogic::byType('tendaac') as $eqLogic) {
 				if ( $eqLogic->getId() == init('id') ) {
@@ -636,10 +1000,10 @@ class tendaac extends eqLogic {
               	$arr = json_decode($connected, true);
 				$tabstyle = "<style> th, td { padding : 2px !important; color: #C7C6C6; } </style><style> th { text-align:center; } </style><style> td { text-align:left; } </style>";
 				$ConnectedListTable =	 "$tabstyle<table border=1>";
-				//$ConnectedListTable .=  "<tr><th>Nom d'hôte</th><th>Connectivité</th><th>Download</th><th>Upload</th><th>@IP</th><th>@MAC</th><th>Durée</th></tr>"; //suppression @MAC
 				$ConnectedListTable .=  "<tr><th>Nom d'hôte</th><th>@IP</th><th>Connectivité</th><th>Download</th><th>Upload</th><th>Durée</th></tr>";
 
 				$Hostname = array();
+				$activeclients = array();
 				for($i = 0;$i < count($arr["onlineList"]); $i++){
 					$Hostname[$i] = $arr["onlineList"][$i]["qosListHostname"]; //Unknown
 					$Remark[$i] = $arr["onlineList"][$i]["qosListRemark"]; //ESP Ballon
@@ -668,14 +1032,18 @@ class tendaac extends eqLogic {
 					} else {
 						$ConnectType[$i] = '';
 					}
-					//$MACAddress[$i] = $arr["onlineList"][$i]["qosListMac"]; //c8:d8:54:6f:aa:ef
+					$MACAddress[$i] = $arr["onlineList"][$i]["qosListMac"]; //c8:d8:54:6f:aa:ef
 					$DownSpeed[$i] = $arr["onlineList"][$i]["qosListDownSpeed"]; //1540.00
+					$Present[$i] = $arr["onlineList"][$i]["qosListAccess"];
+					$Type[$i] = $arr["onlineList"][$i]["qosListManufacturer"];
+					$SimpleDownSpeed[$i] = round($DownSpeed[$i]/1024,2);
 					if ($DownSpeed[$i] > 1024) {
 						$DownSpeed[$i] = round($DownSpeed[$i]/1024,2).' MB/s';
 					} else {
 						$DownSpeed[$i] = $DownSpeed[$i].' KB/s';
 					}
 					$UpSpeed[$i] = $arr["onlineList"][$i]["qosListUpSpeed"]; //351.00
+					$SimpleUpSpeed[$i] = round($UpSpeed[$i]/1024,2);
 					if ($UpSpeed[$i] > 1024) {
 						$UpSpeed[$i] = round($UpSpeed[$i]/1024,2).' MB/s';
 					} else {
@@ -684,9 +1052,45 @@ class tendaac extends eqLogic {
 					$Timest[$i] = $arr["onlineList"][$i]["qoslistConnetTime"]; //8085
 					$Timest[$i] = transforme($Timest[$i]);
 
-					//$ConnectedListTable .=  "<tr><td>".$Hostname[$i]."</td><td>".$ConnectType[$i]." ".$AccessType[$i]."</td><td>".$DownSpeed[$i]."</td><td>".$UpSpeed[$i]."</td><td>".$IPAddress[$i]."</td><td>".$MACAddress[$i]."</td><td>".$Timest[$i]."</td></tr>"; //suppression @MAC
 					$ConnectedListTable .=  "<tr><td>".$Hostname[$i]."</td><td>".$IPAddress[$i]."</td><td>".$ConnectType[$i]." ".$AccessType[$i]."</td><td>".$DownSpeed[$i]."</td><td>".$UpSpeed[$i]."</td><td>".$Timest[$i]."</td></tr>";
+
+					$client['Name'] = $Hostname[$i];
+					$client['Key'] = $MACAddress[$i];
+					$client['IPAddress'] = $IPAddress[$i];
+					$client['AccessType'] = $ConnectType[$i];
+					$client['lastlogin'] = $Timest[$i];
+					$client['DownSpeed'] = $SimpleDownSpeed[$i];
+					$client['UpSpeed'] = $SimpleUpSpeed[$i];
+					$client['deviceType'] = $Type[$i];
+					$activeclients[$MACAddress[$i]] = $Present[$i];
+
+					$lbcli = tendaac::byLogicalId($MACAddress[$i], 'tendaac');
+					if (!is_object($lbcli) && config::byKey('createClients','tendaac',0)) {
+						tendaac::createClient($client, $lbcli);
+						$lbcli = tendaac::byLogicalId($MACAddress[$i], 'tendaac');
+					}
+					if (is_object($lbcli) && $lbcli->getConfiguration('type','') == 'cli') {
+						if ($lbcli->getIsEnable()){
+							 $this->refreshClientInfo($client, $lbcli);
+						 }
+					}
 				}
+
+				foreach (self::byType('tendaac') as $eqLogicClient) {
+					if ($eqLogicClient->getConfiguration('type')=='cli') {
+						$clicmd = $eqLogicClient->getCmd(null, 'present');
+						if (is_object($clicmd)) {
+							if (isset($activeclients[$eqLogicClient->getLogicalId()]) && $activeclients[$eqLogicClient->getLogicalId()] == true) {
+								log::add('tendaac','debug','Le client '.$eqLogicClient->getHumanName() . ' est actif');
+								$eqLogicClient->checkAndUpdateCmd('present', true);
+							} else {
+								log::add('tendaac','debug','Le client '.$eqLogicClient->getHumanName() . ' est inactif');
+								$eqLogicClient->checkAndUpdateCmd('present', false);
+							}
+						}
+					}
+				}
+
 				$ConnectedListTable .=  "</table>";
 				$this->checkAndUpdateCmd('connectedlist', $ConnectedListTable);
 			}

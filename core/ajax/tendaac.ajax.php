@@ -24,17 +24,33 @@ try {
 		throw new Exception('401 Unauthorized');
 	}
 	ajax::init();
-
+  
+	if (init('action') == 'deleteDisabledEQ') {
+		tendaac::deleteDisabledEQ(init('what'));
+		ajax::success();
+    }
+	if (init('action') == 'syncTendaac') {
+		if(init('what'))
+			$param=init('what');
+		else
+			$param=null;
+		tendaac::syncTendaac($param);
+		ajax::success();
+    }
+  	if (init('action') == 'noMoreIgnore') {
+		tendaac::noMoreIgnore(init('what'));
+		ajax::success();
+	}
 	if (init('action') == 'checkRemoveFile') {
 		$url = init('url');
 		$arr = ajax::success(tendaac::checkRemoveFile(init('url')));
 		$return['cmd'] = array();
 		foreach ($arr as $cmd) {
-      log::add('tendaac', 'debug', "Erreur checkRemoveFile : ".$cmd);
-      $return['cmd'][] = $cmd;
-    }
-    ajax::success($return);
-  }
+			log::add('tendaac', 'debug', "Erreur checkRemoveFile : ".$cmd);
+			$return['cmd'][] = $cmd;
+		}
+		ajax::success($return);
+	}
 
 	if (init('action') == 'createBackup') {
 		$eqLogics = eqLogic::byType('tendaac');
@@ -48,6 +64,7 @@ try {
 		ajax::success($return);
 	}
 	if (init('action') == 'listBackup') {
+		$options = '';
 		$path = '/var/www/html/';
 		$directory = 'plugins/tendaac/data/backup/';
 		$scanned_directory = preg_grep('~\.(cfg)$~',(scandir($path.$directory)));
