@@ -5,50 +5,110 @@ if (!isConnect('admin')) {
 $plugin = plugin::byId('tendaac');
 sendVarToJS('eqType', $plugin->getId());
 $eqLogics = eqLogic::byType($plugin->getId());
+
+$has = ["box"=>false,"cli"=>false];
+foreach ($eqLogics as $eqLogic) {
+    if ($eqLogic->getConfiguration('type') == '') {
+        $eqLogic->setConfiguration('type', 'box');
+        $eqLogic->save();
+    }
+    $type=$eqLogic->getConfiguration('type','');
+    if($type) {
+        $has[$type]=true;
+    }
+}
 ?>
 
 <div class="row row-overflow">
     <div class="col-lg-9 col-md-9 col-sm-8 eqLogicThumbnailDisplay" style="border-left: solid 1px #EEE; padding-left: 25px;">
         <legend><i class="fa fa-cog"></i>  {{Gestion}}</legend>
         <div class="eqLogicThumbnailContainer">
-            <div class="cursor eqLogicAction" data-action="add" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
-                <center>
-                    <i class="fa fa-plus-circle" style="font-size : 3em;color:#94ca02;"></i>
-                </center>
-                <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>Ajouter</center></span>
+            <div class="cursor eqLogicAction logoPrimary" data-action="add"  >
+                <i class="fas fa-plus-circle"></i>
+                <br>
+                <span >{{Ajouter}}</span>
             </div>
-            <div class="cursor eqLogicAction" data-action="gotoPluginConf" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
-                <center>
-                    <i class="fa fa-wrench" style="font-size : 3em;color:#767676;"></i>
-                </center>
-                <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Configuration}}</center></span>
+            <div class="cursor eqLogicAction logoSecondary" data-action="gotoPluginConf" >
+                <i class="fas fa-wrench"></i>
+                <br>
+                <span>{{Configuration}}</span>
+			</div>
+            <div class="cursor logoSecondary" id="bt_healthtendaac">
+                <i class="fas fa-medkit"></i>
+                <br />
+                <span>{{Santé}}</span>
             </div>
-            <div class="cursor" id="bt_healthtendaac" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
-              <center>
-                <i class="fas fa-medkit" style="font-size : 3em;color:#767676;"></i>
-              </center>
-              <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Santé}}</center></span>
-            </div>
-        </div>
-        <legend>{{Mes routeurs Tenda}}
+   	 </div>
+        <legend><i class="fas fa-table"></i>{{Mes routeurs Tenda}}
         </legend>
-        <div class="eqLogicThumbnailContainer">
+        <div class="panel">
+            <div class="panel-body">
+<div class="eqLogicThumbnailContainer ">
             <?php
-            if (count($eqLogics) == 0) {
-                echo "<br/><br/><br/><center><span style='color:#767676;font-size:1.2em;font-weight: bold;'>{{Vous n\\'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer}}</span></center>";
+                    if($has['box']) {
+                        foreach ($eqLogics as $eqLogic) {
+                            if($eqLogic->getConfiguration('type','') != 'box') {
+                                continue;
+                            }
+                            $opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
+                            echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
+                            echo '<img src="' . $eqLogic->getImage() . '"/>';
+                            echo '<br>';
+                            echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
+                            echo '</div>';
+                        }
             } else {
-                foreach ($eqLogics as $eqLogic) {
-                    echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
-                    echo "<center>";
-                    echo '<img src="plugins/tendaac/plugin_info/tendaac_icon.png" height="105" width="95" />';
-                    echo "</center>";
-                    echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
-                    echo '</div>';
-                }
+                echo "<br/><br/><br/><center><span style='color:#767676;font-size:1.2em;font-weight: bold;'>{{Vous n\\'avez pas encore de routeur Tenda, cliquez sur Ajouter un équipement pour commencer}}</span></center>";
             }
             ?>
         </div>
-    </div>
+    	</div>
+        </div>
+		<legend>
+			<i class="fas fa-table"></i> {{Mes Clients}} 
+				<span class="cursor eqLogicAction" style="color:#0091ff" data-action="discover" data-action2="clients" title="{{Scanner les clients}}">
+			<i class="fas fa-bullseye"></i></span>&nbsp;
+				<span class="cursor eqLogicAction" style="color:#0091ff" data-action="delete" data-action2="clients" title="{{Supprimer Clients non-actifs (et ignorer lors des prochaines sync)}}">
+			<i class="fas fa-trash"></i></span>
+				<span class="cursor eqLogicAction" style="position: absolute; right: 100px;color:#0091ff" data-action="delete" data-action2="all" title="{{Supprimer tous les clients}}">
+			<i class="fas fa-trash"></i></span>
+		</legend>
+        <div class="input-group" style="margin-bottom:5px;">
+            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic2" />
+            <div class="input-group-btn">
+                <a id="bt_resetEqlogicSearch2" class="btn roundedRight" style="width:30px"><i class="fas fa-times"></i></a>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-body">
+                <div class="eqLogicThumbnailContainer  second">
+                    <?php
+                    if($has['cli']) {
+						foreach ($eqLogics as $eqLogic) {
+                            if($eqLogic->getConfiguration('type','') != 'cli') {
+                                continue;
+                            }
+                            $opacity = '';
+                            if ($eqLogic->getIsEnable() != 1) {
+                                $opacity = ' disableCard';
+                            }
+
+                            echo '<div class="eqLogicDisplayCard cursor  second '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
+                            echo '<img src="' . $eqLogic->getImage() . '"/>';
+                            echo '<br>';
+                            echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
+                    echo '</div>';
+                }
+                    } else {
+                        echo "<br/><br/><br/><center><span style='color:#767676;font-size:1.2em;font-weight: bold;'>{{Scannez les clients pour les créer}}</span></center>";
+            }
+            ?>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
 
 	<div class="col-xs-12 eqLogic" style="display: none;">
 		<div class="input-group pull-right" style="display:inline-flex">
@@ -113,82 +173,17 @@ $eqLogics = eqLogic::byType($plugin->getId());
                   <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>Visible</label>
                 </div>
               </div>
-
-              <div class="form-group">
-                <legend>{{Configuration}}
-                </legend>
-                <a class="btn btn-default" id="bt_goWebpage" title='{{Accéder à la page web}}'><i class="fa fa-cogs"></i></a>
-                <label class="col-sm-4 control-label">{{IP du routeur Tenda}}</label>
-                <div class="col-sm-7">
-                  <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="ip"/>
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label class="col-sm-4 control-label">{{Mot de passe du routeur Tenda}}
-                  <sup>
-                    <i class="fa fa-question-circle tooltips" title="Saisissez le mot de passe d'accès au routeur.
-Laisse le champ vide si vous n'avez pas de mot de passe." style="font-size : 1em;color:grey;"></i>
-                  </sup>
-                </label>
-                <div class="col-sm-7">
-                  <input type="password" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="password"/>
-                </div>
-                </div>
-
-
-			<div class="form-group">
-                <label class="col-sm-4 control-label">{{Rafraîchissement des informations}}
-                	<sup>
-                    <i class="fa fa-question-circle tooltips" title="Réception des informations à intervalle selectionné.
-  La commande est envoyée toutes les minutes, 5 minutes, 10 minutes, 15 minutes, 30 minutes..." style="font-size : 1em;color:grey;"></i>
-                	</sup>
-               	</label>
-               	<div class="col-sm-7">
-					<select class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="RepeatCmd">
-						<option value="">{{Non}}</option>
-						<option value="cron">{{Toutes les minutes}}</option>
-						<option value="cron5">{{Toutes les 5 minutes}}</option>
-						<option value="cron10">{{Toutes les 10 minutes}}</option>
-						<option value="cron15">{{Toutes les 15 minutes}}</option>
-						<option value="cron30">{{Toutes les 30 minutes}}</option>
-						<option value="cronHourly">{{Toutes les heures}}</option>
-					</select>
-        </div>
-      </div>
 			</fieldset>
 			</form>
 		</div>
-
-		<div class="col-lg-6">
+		<div class="col-sm-6">
+			<br />
 			<form class="form-horizontal">
-				<legend>{{Sauvegardes}}</legend>
-					<fieldset>
-            <div class="form-group">
-              <label class="col-xs-12"><i class="fas fa-tape"></i> {{Sauvegardes disponibles}}</label>
-              <div class="col-xs-12">
-                <select class="form-control" id="sel_restoreBackupTenda">
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-6 col-xs-12">
-                <a class="btn btn-danger" id="bt_removeBackupTenda" style="width:100%;"><i class="far fa-trash-alt"></i> {{Supprimer la sauvegarde}}</a>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-6 col-xs-12">
-                <a class="btn btn-success" id="bt_downloadBackupTenda" style="width:100%;"><i class="fas fa-cloud-download-alt"></i> {{Télécharger la sauvegarde}}</a>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                <a class="btn btn-default" id="bt_createBackupTenda" style="width:100%;"><i class="fas fa-cloud-upload-alt"></i> {{Lancer la sauvegarde}}</a>
-              </div>
-            </div>
-          </fieldset>
-        </form>
-      </div>
+				<fieldset>                
+					<div class="item-conf"></div>
+				</fieldset>
+			</form>
+		</div>
     </div>
 
         <div role="tabpanel" class="tab-pane" id="commandtab">

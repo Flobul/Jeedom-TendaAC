@@ -31,7 +31,7 @@ $eqLogics = tendaac::byType('tendaac');
 			<th>{{WiFi}}</th>
 			<th><i class="fas fa-arrow-down"> {{Vitesse réception}}</th>
 			<th><i class="fas fa-arrow-up"> {{Vitesse émission}}</th>
-			<th>{{Temps de connexion WAN}}</th>
+			<th>{{Temps de connexion}}</th>
 			<th>{{Dernière communication}}</th>
 			<th>{{Date de création}}</th>
 		</tr>
@@ -41,19 +41,47 @@ $eqLogics = tendaac::byType('tendaac');
 foreach ($eqLogics as $eqLogic) {
 	echo '<tr><td><a href="' . $eqLogic->getLinkToConfiguration() . '" style="text-decoration: none;">' . $eqLogic->getHumanName(true) . '</a></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getId() . '</span></td>';
-	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getConfiguration('ip') . '</span></td>';
-	$status = '<span class="label label-success" style="font-size : 1em; cursor : default;">{{OK}}</span>';
-	if ($eqLogic->getStatus('state') == 'nok') {
-		$status = '<span class="label label-danger" style="font-size : 1em; cursor : default;">{{NOK}}</span>';
+	if ($eqLogic->getConfiguration('type') == 'box') {
+		echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getConfiguration('ip') . '</span></td>';
+    }
+	else {
+		$ip = $eqLogic->getCmd('info', 'ip');
+		if (isset($ip) && $ip != '') {
+			echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $ip->execCmd() . '</span></td>';
+		}
 	}
-	$wifistatus = $eqLogic->getCmd('info', 'wifistatus');
-	if (is_object($wifistatus)) {
-		$wifivalue = $wifistatus->execCmd();
+	if ($eqLogic->getConfiguration('type') == 'box') {
+		$status = '<span class="label label-success" style="font-size : 1em; cursor : default;">{{OK}}</span>';
+		if ($eqLogic->getStatus('state') == 'nok') {
+			$status = '<span class="label label-danger" style="font-size : 1em; cursor : default;">{{NOK}}</span>';
+		}
+    } else {
+		$present = $eqLogic->getCmd('info', 'present');
+		if (isset($present) && $present != '' && $present->execCmd() == '1') {
+			$status = '<span class="label label-success" style="font-size : 1em; cursor : default;">{{OK}}</span>';
+		} else {
+			$status = '<span class="label label-danger" style="font-size : 1em; cursor : default;">{{NOK}}</span>';          
+		}
 	}
-	if ($wifivalue == 1){
-		$wifi = '<span class="label label-success" style="font-size : 1em;" title="{{Présent}}"><i class="fa fa-check"></i></span>';
+	if ($eqLogic->getConfiguration('type') == 'box') {
+		$wifistatus = $eqLogic->getCmd('info', 'wifistatus');
+		if (is_object($wifistatus)) {
+			$wifivalue = $wifistatus->execCmd();
+		}
+		if ($wifivalue == 1){
+			$wifi = '<span class="label label-success" style="font-size : 1em;" title="{{Présent}}"><i class="fas fa-rss"></i></span>';
+		} else {
+			$wifi = '<span class="label label-danger" style="font-size : 1em;" title="{{Absent}}"><i class="fa fa-times"></i></span>';
+		}
 	} else {
-		$wifi = '<span class="label label-danger" style="font-size : 1em;" title="{{Absent}}"><i class="fa fa-times"></i></span>';
+		$wifi = $eqLogic->getCmd('info', 'access');
+		if (isset($wifi) && $wifi != '' && $wifi->execCmd() == 'WiFi') {
+			$wifi = '<span class="label label-success" style="font-size : 1em; cursor : default;"><i class="fas fa-rss"></i></span>';
+        } elseif (isset($wifi) && $wifi != '' && $wifi->execCmd() == 'Ethernet') {
+			$wifi = '<span class="label label-success" style="font-size : 1em; cursor : default;"><i class="icon techno-cable1"></i></span>';
+		} else {
+			$wifi = '<span class="label label-danger" style="font-size : 1em; cursor : default;">{{NOK}}</span>';          
+		}
 	}
 	echo '<td>' . $status . '</td>';
 	echo '<td>' . $wifi . '</td>';
@@ -66,15 +94,22 @@ foreach ($eqLogics as $eqLogic) {
 	if (is_object($upspeed)) {
 		$upspeedvalue = $upspeed->execCmd();
 	}
-	$wantime = $eqLogic->getCmd('info', 'wantime');
-  	if (is_object($wantime)) {
-		$wantimevalue = $wantime->execCmd();
-	}
+	if ($eqLogic->getConfiguration('type') == 'box') {
+		$wantime = $eqLogic->getCmd('info', 'wantime');
+  		if (is_object($wantime)) {
+			$wantimevalue = $wantime->execCmd();
+		}
+	} else {
+		$wantime = $eqLogic->getCmd('info', 'lastlogin');
+  		if (is_object($wantime)) {
+			$wantimevalue = $wantime->execCmd();
+		}		
+    }
 	echo '<td></i><span class="label label-info" style="font-size : 1em; cursor : default;">' . $downspeedvalue . ' MB/s</span></td>';
 	echo '<td></i><span class="label label-info" style="font-size : 1em; cursor : default;">' . $upspeedvalue . ' MB/s</span></td>';
 	echo '<td></i><span class="label label-info" style="font-size : 1em; cursor : default;">' . $wantimevalue . '</span></td>';
 
-	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getStatus('lastCommunication') . '</span></td>';
+	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getCache('lastupdate','0') . '</span></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getConfiguration('createtime') . '</span></td></tr>';
 }
 ?>

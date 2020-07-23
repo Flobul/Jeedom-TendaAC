@@ -1,3 +1,22 @@
+function printEqLogic(_eqLogic) {
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=type]').off();
+    if (isset(_eqLogic.configuration) && isset(_eqLogic.configuration.type) && _eqLogic.configuration.type != '') {
+        $('.item-conf').load('index.php?v=d&plugin=tendaac&modal=' + _eqLogic.configuration.type + '.configuration', function () {
+            $('body').setValues(_eqLogic, '.eqLogicAttr');
+            initCheckBox();
+            modifyWithoutSave = false;
+        });
+    } else {
+        $('.item-conf').empty();
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=type]').on('change', function () {
+            $('.item-conf').load('index.php?v=d&plugin=tendaac&modal=' + $(this).val() + '.configuration', function() {
+                initCheckBox();
+            });
+        });
+    }	
+	
+}
+
 function addCmdToTable(_cmd) {
    if (!isset(_cmd)) {
         var _cmd = {configuration: {}};
@@ -95,6 +114,30 @@ function addCmdToTable(_cmd) {
     }
 }
 
+$('.eqLogicAction[data-action=discover]').on('click', function (e) {
+	var what=e.currentTarget.dataset.action2 || null;
+	$.ajax({// fonction permettant de faire de l'ajax
+		type: "POST", // methode de transmission des données au fichier php
+		url: "plugins/tendaac/core/ajax/tendaac.ajax.php", // url du fichier php
+		data: {
+			action: "syncTendaac",
+			what: what
+		},
+		dataType: 'json',
+		error: function (request, status, error) {
+			handleAjaxError(request, status, error);
+		},
+		success: function (data) { // si l'appel a bien fonctionné
+			if (data.state != 'ok') {
+				$('#div_alert').showAlert({message: data.result, level: 'danger'});
+				return;
+			}
+			$('#div_alert').showAlert({message: '{{Synchronisation réussie}} : '+what, level: 'success'});
+			location.reload();
+	  }
+	});
+});
+
 $('#bt_healthtendaac').on('click', function () {
   $('#md_modal').dialog({title: "{{Santé Tenda AC}}"});
   $('#md_modal').load('index.php?v=d&plugin=tendaac&modal=health').dialog('open');
@@ -135,6 +178,35 @@ $('#bt_createBackupTenda').off().on('click', function () {
              }
          });
  });
+
+$('.eqLogicAction[data-action=delete]').on('click', function (e) {
+	var what=e.currentTarget.dataset.action2;
+	if (what == 'clients') var text='{{Cette action supprimera les '+what+' désactivés (grisés).<br/>Ceux-ci seront ignorés lors des prochains scans.<br/>Pour réinitialiser les ignorés, allez dans la configuration du plugin.}}';
+	else if (what == 'all') var text='{{Cette action supprimera tous les clients.}}';
+		bootbox.confirm(text, function(result) {		if (result) {
+			$.ajax({// fonction permettant de faire de l'ajax
+				type: "POST", // methode de transmission des données au fichier php
+				url: "plugins/tendaac/core/ajax/tendaac.ajax.php", // url du fichier php
+				data: {
+					action: "deleteDisabledEQ",
+					what: what
+				},
+				dataType: 'json',
+				error: function (request, status, error) {
+					handleAjaxError(request, status, error);
+				},
+				success: function (data) { // si l'appel a bien fonctionné
+				if (data.state != 'ok') {
+					$('#div_alert').showAlert({message: data.result, level: 'danger'});
+					return;
+				}
+				$('#div_alert').showAlert({message: '{{Suppression réussie}} : '+what, level: 'success'});
+				location.reload();
+			  }
+			});
+		}
+	});
+});
 
 function checkRemoveFile(url) {
 	$('#div_alert').showAlert({message: '{{Suppression en cours}}', level: 'warning'});
