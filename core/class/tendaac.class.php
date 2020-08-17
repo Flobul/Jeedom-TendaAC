@@ -468,11 +468,11 @@ class tendaac extends eqLogic {
 			return $html;
 			}
 		}
-		public function preInsert()
+		public function preSave()
 		{
 			$this->setIsVisible(0);
 		}
-		public function postInsert()
+		public function postSave()
 		{
 			if ( $this->getIsEnable() && $this->getConfiguration('type','') == 'box') {
 				$status = $this->getCmd(null, 'status');
