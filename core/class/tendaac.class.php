@@ -470,7 +470,7 @@ class tendaac extends eqLogic {
 		}
 		public function preSave()
 		{
-			$this->setIsVisible(0);
+			//$this->setIsVisible(0);
 		}
 		public function postSave()
 		{
