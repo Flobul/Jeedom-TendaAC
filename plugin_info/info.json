@@ -2,7 +2,7 @@
 	"id" : "tendaac",
 	"name" : "Routeur Tenda AC",
 	"description" : "Plugin permettant de gérer les routeurs Tenda AC11",
-	"utilization" : "Voir la documentation du plugin https://flobul.github.io/TendaAC/fr_FR/ ",
+	"utilization" : "Voir la documentation du plugin https://flobul-domotique.fr/configuration-du-plugin-jailbreak-pour-jeedom-2/ ",
 	"licence" : "AGPL",
 	"author" : "Flobul",
 	"require" : "3.0",
@@ -10,8 +10,8 @@
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
-	"changelog" : "https://flobul.github.io/TendaAC/#language#/changelog",
-	"documentation" : "https://flobul.github.io/TendaAC/#language#/",
+	"changelog" : "https://flobul-domotique.fr/liste-des-versions-du-plugin-routeur-tenda-ac-pour-jeedom/",
+	"documentation" : "https://flobul-domotique.fr/presentation-du-plugin-routeur-tenda-ac-pour-jeedom/",
 	"forum_link" : "https://community.jeedom.com/t/plugin-tiers-tenda-ac/20151",
 	"link" : {
 		"forum" : "https://community.jeedom.com/t/plugin-tiers-tenda-ac/20151"
